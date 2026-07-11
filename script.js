@@ -1,49 +1,36 @@
-/* =====================================================
-   DELÍCIAS DO MILHO 2.0
-   SCRIPT PRINCIPAL
-   ----------------------------------
-   Módulo 1 - Base do Sistema
-===================================================== */
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 1
+    Configuração • Banco • Utilitários • Inicialização
+=====================================================*/
 
 "use strict";
 
-/* =====================================================
-   CONFIGURAÇÃO
-===================================================== */
+/*====================================================
+    CONFIGURAÇÃO
+=====================================================*/
 
 const APP = {
-
     nome: "Delícias do Milho",
-
-    versao: "2.0",
-
+    versao: "3.0",
     storage: "delicias-do-milho"
-
 };
 
-
-/* =====================================================
-   BANCO DE DADOS
-===================================================== */
+/*====================================================
+    BANCO DE DADOS
+=====================================================*/
 
 let banco = {
-
     produtos: [],
-
     fechamentos: [],
-
     configuracoes: {
-
         tema: "claro"
-
     }
-
 };
 
-
-/* =====================================================
-   CARREGAR BANCO
-===================================================== */
+/*====================================================
+    LOCAL STORAGE
+=====================================================*/
 
 function carregarBanco() {
 
@@ -52,7 +39,6 @@ function carregarBanco() {
     if (!dados) {
 
         salvarBanco();
-
         return;
 
     }
@@ -61,9 +47,7 @@ function carregarBanco() {
 
         banco = JSON.parse(dados);
 
-    }
-
-    catch (erro) {
+    } catch (erro) {
 
         console.error("Erro ao carregar banco.");
 
@@ -73,329 +57,230 @@ function carregarBanco() {
 
 }
 
-
-/* =====================================================
-   SALVAR BANCO
-===================================================== */
-
 function salvarBanco() {
 
     localStorage.setItem(
-
         APP.storage,
-
         JSON.stringify(banco)
-
     );
 
 }
 
-
-/* =====================================================
-   UTILITÁRIOS
-===================================================== */
+/*====================================================
+    UTILITÁRIOS
+=====================================================*/
 
 function gerarId() {
 
-    return Date.now();
+    return Date.now() + Math.floor(Math.random() * 999);
 
 }
 
+function moeda(valor) {
 
-
-function formatarMoeda(valor) {
-
-    return valor.toLocaleString(
-
+    return Number(valor).toLocaleString(
         "pt-BR",
-
         {
-
             style: "currency",
-
             currency: "BRL"
-
         }
-
     );
 
 }
 
+function dataBR(data) {
 
+    if (!data) return "";
 
-function formatarData(data) {
-
-    return new Date(data)
-
-        .toLocaleDateString("pt-BR");
+    return new Date(data).toLocaleDateString("pt-BR");
 
 }
 
+/*====================================================
+    ELEMENTOS
+=====================================================*/
 
-/* =====================================================
-   ELEMENTOS
-===================================================== */
-
-const elementos = {};
-
-
+const el = {};
 
 function carregarElementos() {
 
-    elementos.paginas =
+    document.querySelectorAll("[id]").forEach(item => {
 
-        document.querySelectorAll(".page");
+        el[item.id] = item;
 
-
-
-    elementos.menu =
-
-        document.querySelectorAll(".menu-btn");
-
-
-
-    elementos.dataAtual =
-
-        document.getElementById("dataAtual");
-
-
-
-    elementos.titulo =
-
-        document.getElementById("tituloPagina");
-
-
-
-    elementos.btnTema =
-
-        document.getElementById("btnTema");
-
-
-
-    elementos.nomeProduto =
-
-        document.getElementById("nomeProduto");
-
-
-
-    elementos.precoVenda =
-
-        document.getElementById("precoVenda");
-
-
-
-    elementos.precoCusto =
-
-        document.getElementById("precoCusto");
-
-
-
-    elementos.listaProdutos =
-
-        document.getElementById("listaProdutos");
+    });
 
 }
 
-
-/* =====================================================
-   DATA
-===================================================== */
-
-function atualizarData() {
-
-    if (!elementos.dataAtual) return;
-
-    elementos.dataAtual.textContent =
-
-        new Date().toLocaleDateString(
-
-            "pt-BR",
-
-            {
-
-                weekday: "long",
-
-                day: "2-digit",
-
-                month: "long",
-
-                year: "numeric"
-
-            }
-
-        );
-
-}
-
-
-/* =====================================================
-   NAVEGAÇÃO
-===================================================== */
+/*====================================================
+    NAVEGAÇÃO
+=====================================================*/
 
 function abrirPagina(nome) {
 
-    elementos.paginas.forEach(pagina => {
+    document
+        .querySelectorAll(".page")
+        .forEach(pagina => {
 
-        pagina.classList.remove("active-page");
+            pagina.classList.remove("active-page");
 
-    });
+        });
 
-    elementos.menu.forEach(botao => {
+    document
+        .querySelectorAll(".menu-btn")
+        .forEach(botao => {
 
-        botao.classList.remove("active");
+            botao.classList.remove("active");
 
-    });
+        });
 
-    const pagina =
+    document
+        .getElementById(nome)
+        ?.classList.add("active-page");
 
-        document.getElementById(nome);
+    document
+        .querySelector(`[data-page="${nome}"]`)
+        ?.classList.add("active");
 
-    if (pagina) {
+    if (el.tituloPagina) {
 
-        pagina.classList.add("active-page");
+        const texto = document
+            .querySelector(`[data-page="${nome}"] span`);
 
-    }
+        if (texto) {
 
-    const botao =
+            el.tituloPagina.textContent =
+                texto.textContent;
 
-        document.querySelector(
-
-            `[data-page="${nome}"]`
-
-        );
-
-    if (botao) {
-
-        botao.classList.add("active");
+        }
 
     }
 
 }
 
-
-/* =====================================================
-   MENU
-===================================================== */
+/*====================================================
+    MENU
+=====================================================*/
 
 function iniciarMenu() {
 
-    elementos.menu.forEach(botao => {
+    document
+        .querySelectorAll(".menu-btn")
+        .forEach(botao => {
 
-        botao.addEventListener(
+            botao.addEventListener("click", () => {
 
-            "click",
+                abrirPagina(botao.dataset.page);
 
-            () => {
+            });
 
-                abrirPagina(
+        });
 
-                    botao.dataset.page
+}
 
-                );
+/*====================================================
+    DATA
+=====================================================*/
 
+function atualizarData() {
+
+    if (!el.dataAtual) return;
+
+    el.dataAtual.textContent =
+        new Date().toLocaleDateString(
+            "pt-BR",
+            {
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
             }
-
         );
 
-    });
-
 }
 
+/*====================================================
+    TEMA
+=====================================================*/
 
-/* =====================================================
-   TEMA
-===================================================== */
+function aplicarTema() {
 
-function carregarTema() {
-
-    if (
-
-        banco.configuracoes.tema ===
-
-        "escuro"
-
-    ) {
-
-        document.body.classList.add("dark");
-
-    }
+    document.body.classList.toggle(
+        "dark",
+        banco.configuracoes.tema === "escuro"
+    );
 
 }
-
-
 
 function alternarTema() {
 
-    document.body.classList.toggle("dark");
-
     banco.configuracoes.tema =
-
-        document.body.classList.contains("dark")
-
+        banco.configuracoes.tema === "claro"
             ? "escuro"
-
             : "claro";
+
+    aplicarTema();
 
     salvarBanco();
 
 }
 
+/*====================================================
+    INICIAR SISTEMA
+=====================================================*/
 
-/* =====================================================
-   INICIALIZAÇÃO
-===================================================== */
+function iniciarSistema() {
 
-document.addEventListener(
+    carregarBanco();
 
-    "DOMContentLoaded",
+    carregarElementos();
 
-    () => {
+    atualizarData();
 
-        carregarBanco();
+    aplicarTema();
 
-        carregarElementos();
+    iniciarMenu();
 
-        atualizarData();
+    if (el.btnTema) {
 
-        carregarTema();
-
-        iniciarMenu();
-
-        if (elementos.btnTema) {
-
-            elementos.btnTema.addEventListener(
-
-                "click",
-
-                alternarTema
-
-            );
-
-        }
+        el.btnTema.addEventListener(
+            "click",
+            alternarTema
+        );
 
     }
 
+    console.log(
+        `${APP.nome} ${APP.versao} iniciado com sucesso.`
+    );
+
+}
+
+/*====================================================
+    INICIALIZAÇÃO
+=====================================================*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    iniciarSistema
 );
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 2
+    CRUD DE PRODUTOS
+=====================================================*/
 
-/* =====================================================
-   MÓDULO 2 - PRODUTOS
-===================================================== */
-
-/* =========================
-   CADASTRAR PRODUTO
-========================= */
+/*====================================================
+    ADICIONAR PRODUTO
+=====================================================*/
 
 function adicionarProduto() {
 
-    const nome = elementos.nomeProduto.value.trim();
+    const nome = el.nomeProduto.value.trim();
 
-    const precoVenda = Number(
-        elementos.precoVenda.value
-    );
+    const precoVenda = Number(el.precoVenda.value);
 
-    const precoCusto = Number(
-        elementos.precoCusto.value
-    );
+    const precoCusto = Number(el.precoCusto.value);
 
     if (
         nome === "" ||
@@ -403,13 +288,13 @@ function adicionarProduto() {
         precoCusto <= 0
     ) {
 
-        alert("Preencha todos os campos.");
+        alert("Preencha todos os campos corretamente.");
 
         return;
 
     }
 
-    const produto = {
+    banco.produtos.push({
 
         id: gerarId(),
 
@@ -419,9 +304,7 @@ function adicionarProduto() {
 
         precoCusto
 
-    };
-
-    banco.produtos.push(produto);
+    });
 
     salvarBanco();
 
@@ -431,33 +314,45 @@ function adicionarProduto() {
 
 }
 
-
-/* =========================
-   LIMPAR FORMULÁRIO
-========================= */
+/*====================================================
+    LIMPAR FORMULÁRIO
+=====================================================*/
 
 function limparFormularioProduto() {
 
-    elementos.nomeProduto.value = "";
+    el.nomeProduto.value = "";
 
-    elementos.precoVenda.value = "";
+    el.precoVenda.value = "";
 
-    elementos.precoCusto.value = "";
+    el.precoCusto.value = "";
 
-    elementos.nomeProduto.focus();
+    el.nomeProduto.focus();
 
 }
 
-
-/* =========================
-   CARREGAR PRODUTOS
-========================= */
+/*====================================================
+    CARREGAR PRODUTOS
+=====================================================*/
 
 function carregarProdutos() {
 
-    if (!elementos.listaProdutos) return;
+    if (!el.listaProdutos) return;
 
-    elementos.listaProdutos.innerHTML = "";
+    el.listaProdutos.innerHTML = "";
+
+    if (banco.produtos.length === 0) {
+
+        el.listaProdutos.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    Nenhum produto cadastrado.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
 
     banco.produtos.forEach(produto => {
 
@@ -467,131 +362,82 @@ function carregarProdutos() {
 
 }
 
-
-/* =========================
-   CRIAR LINHA
-========================= */
+/*====================================================
+    CRIAR LINHA
+=====================================================*/
 
 function criarLinhaProduto(produto) {
 
+    const lucro =
+        produto.precoVenda - produto.precoCusto;
+
     const tr = document.createElement("tr");
 
-    /* Nome */
+    tr.innerHTML = `
 
-    const tdNome = document.createElement("td");
+        <td>${produto.nome}</td>
 
-    tdNome.textContent = produto.nome;
+        <td>${moeda(produto.precoVenda)}</td>
 
-    /* Venda */
+        <td>${moeda(produto.precoCusto)}</td>
 
-    const tdVenda = document.createElement("td");
+        <td>${moeda(lucro)}</td>
 
-    tdVenda.textContent =
-        formatarMoeda(produto.precoVenda);
+        <td>
 
-    /* Lucro */
+            <button
+                class="btn btn-warning btnEditar">
 
-   const tdLucro = document.createElement("td");
+                ✏️
 
-   tdLucro.textContent = formatarMoeda(
-     produto.precoVenda - produto.precoCusto);
+            </button>
 
-   /*custo*/
-   
-    const tdCusto = document.createElement("td");
+            <button
+                class="btn btn-danger btnExcluir">
 
-    tdCusto.textContent =
-        formatarMoeda(produto.precoCusto);
+                🗑️
 
-    /* Ações */
+            </button>
 
-    const tdAcoes = document.createElement("td");
+        </td>
 
-    const btnEditar =
-        document.createElement("button");
+    `;
 
-    btnEditar.textContent = "✏️";
+    tr.querySelector(".btnEditar")
+        .addEventListener("click", () => {
 
-    btnEditar.className = "btn-icon";
+            editarProduto(produto.id);
 
-    btnEditar.addEventListener(
+        });
 
-        "click",
+    tr.querySelector(".btnExcluir")
+        .addEventListener("click", () => {
 
-        () => editarProduto(produto.id)
+            excluirProduto(produto.id);
 
-    );
+        });
 
-
-
-    const btnExcluir =
-        document.createElement("button");
-
-    btnExcluir.textContent = "🗑️";
-
-    btnExcluir.className = "btn-icon danger";
-
-    btnExcluir.addEventListener(
-
-        "click",
-
-        () => excluirProduto(produto.id)
-
-    );
-
-
-
-    tdAcoes.append(
-
-        btnEditar,
-
-        btnExcluir
-
-    );
-
-
-
-    tr.append(
-
-        tdNome,
-
-        tdVenda,
-
-        tdCusto,
-
-        tdLucro,
-
-        tdAcoes
-
-    );
-
-
-
-    elementos.listaProdutos.append(tr);
+    el.listaProdutos.appendChild(tr);
 
 }
 
-
-/* =========================
-   EDITAR PRODUTO
-========================= */
+/*====================================================
+    EDITAR PRODUTO
+=====================================================*/
 
 function editarProduto(id) {
 
     const produto = banco.produtos.find(
 
-        item => item.id === id
+        p => p.id === id
 
     );
 
     if (!produto) return;
 
     const nome = prompt(
-
-        "Nome:",
-
+        "Nome do produto:",
         produto.nome
-
     );
 
     if (nome === null) return;
@@ -599,11 +445,8 @@ function editarProduto(id) {
     const venda = Number(
 
         prompt(
-
             "Preço de venda:",
-
             produto.precoVenda
-
         )
 
     );
@@ -611,23 +454,16 @@ function editarProduto(id) {
     const custo = Number(
 
         prompt(
-
             "Preço de custo:",
-
             produto.precoCusto
-
         )
 
     );
 
     if (
-
         nome.trim() === "" ||
-
         venda <= 0 ||
-
         custo <= 0
-
     ) {
 
         alert("Dados inválidos.");
@@ -648,26 +484,24 @@ function editarProduto(id) {
 
 }
 
-
-/* =========================
-   EXCLUIR PRODUTO
-========================= */
+/*====================================================
+    EXCLUIR PRODUTO
+=====================================================*/
 
 function excluirProduto(id) {
 
     const confirmar = confirm(
-
         "Deseja excluir este produto?"
-
     );
 
     if (!confirmar) return;
 
-    banco.produtos = banco.produtos.filter(
+    banco.produtos =
+        banco.produtos.filter(
 
-        produto => produto.id !== id
+            produto => produto.id !== id
 
-    );
+        );
 
     salvarBanco();
 
@@ -675,24 +509,15 @@ function excluirProduto(id) {
 
 }
 
-
-/* =========================
-   EVENTOS
-========================= */
+/*====================================================
+    EVENTOS
+=====================================================*/
 
 function iniciarProdutos() {
 
-    const btn =
+    if (!el.btnSalvarProduto) return;
 
-        document.getElementById(
-
-            "btnSalvarProduto"
-
-        );
-
-    if (!btn) return;
-
-    btn.addEventListener(
+    el.btnSalvarProduto.addEventListener(
 
         "click",
 
@@ -700,24 +525,52 @@ function iniciarProdutos() {
 
     );
 
-       }
+    carregarProdutos();
 
-/* =====================================================
-   MÓDULO 3 - FECHAMENTO
-===================================================== */
+}
 
-/* =========================
-   CARREGAR PRODUTOS
-========================= */
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaOriginal = iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaOriginal();
+
+    iniciarProdutos();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 3
+    FECHAMENTO DO DIA
+=====================================================*/
+
+/*====================================================
+    CARREGAR PRODUTOS NO FECHAMENTO
+=====================================================*/
 
 function carregarProdutosFechamento() {
 
-    const tbody =
-        document.getElementById("produtosFechamento");
+    if (!el.produtosFechamento) return;
 
-    if (!tbody) return;
+    el.produtosFechamento.innerHTML = "";
 
-    tbody.innerHTML = "";
+    if (banco.produtos.length === 0) {
+
+        el.produtosFechamento.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    Nenhum produto cadastrado.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
 
     banco.produtos.forEach(produto => {
 
@@ -726,117 +579,101 @@ function carregarProdutosFechamento() {
         tr.dataset.id = produto.id;
 
         tr.innerHTML = `
+
             <td>${produto.nome}</td>
 
             <td>
                 <input
                     type="number"
+                    class="qtdInicial"
                     min="0"
-                    value="0"
-                    class="qtdInicial">
+                    value="0">
             </td>
 
             <td>
                 <input
                     type="number"
+                    class="qtdFinal"
                     min="0"
-                    value="0"
-                    class="qtdFinal">
+                    value="0">
             </td>
 
-            <td class="vendidos">
-                0
-            </td>
+            <td class="vendidos">0</td>
 
             <td class="receita">
-                ${formatarMoeda(0)}
+                ${moeda(0)}
             </td>
 
             <td class="lucro">
-                ${formatarMoeda(0)}
+                ${moeda(0)}
             </td>
+
         `;
 
-        tbody.append(tr);
+        tr.querySelector(".qtdInicial")
+            .addEventListener("input", atualizarLinha);
 
-        const inicial =
-            tr.querySelector(".qtdInicial");
+        tr.querySelector(".qtdFinal")
+            .addEventListener("input", atualizarLinha);
 
-        const final =
-            tr.querySelector(".qtdFinal");
-
-        inicial.addEventListener(
-            "input",
-            calcularLinha
-        );
-
-        final.addEventListener(
-            "input",
-            calcularLinha
-        );
+        el.produtosFechamento.appendChild(tr);
 
     });
 
 }
 
+/*====================================================
+    CALCULAR UMA LINHA
+=====================================================*/
 
-/* =========================
-   CALCULAR LINHA
-========================= */
+function atualizarLinha(evento) {
 
-function calcularLinha(evento) {
+    const tr = evento.target.closest("tr");
 
-    const tr =
-        evento.target.closest("tr");
+    const id = Number(tr.dataset.id);
 
-    const id =
-        Number(tr.dataset.id);
+    const produto = banco.produtos.find(
 
-    const produto =
-        banco.produtos.find(
-            p => p.id === id
-        );
+        item => item.id === id
 
-    const inicial =
-        Number(
-            tr.querySelector(".qtdInicial").value
-        );
+    );
 
-    const final =
-        Number(
-            tr.querySelector(".qtdFinal").value
-        );
+    const inicial = Number(
+        tr.querySelector(".qtdInicial").value
+    );
+
+    const final = Number(
+        tr.querySelector(".qtdFinal").value
+    );
 
     let vendidos = inicial - final;
 
-    if (vendidos < 0) vendidos = 0;
+    if (vendidos < 0)
+        vendidos = 0;
 
     const receita =
         vendidos * produto.precoVenda;
 
-    const custo =
-        vendidos * produto.precoCusto;
-
     const lucro =
-        receita - custo;
+        vendidos *
+        (produto.precoVenda - produto.precoCusto);
 
     tr.querySelector(".vendidos").textContent =
         vendidos;
 
     tr.querySelector(".receita").textContent =
-        formatarMoeda(receita);
+        moeda(receita);
 
     tr.querySelector(".lucro").textContent =
-        formatarMoeda(lucro);
+        moeda(lucro);
 
     atualizarResumoFechamento();
 
 }
 
-
-/* =========================
-   RESUMO
-========================= */
+/*====================================================
+    RESUMO FINANCEIRO
+=====================================================*/
 
 function atualizarResumoFechamento() {
 
@@ -846,99 +683,136 @@ function atualizarResumoFechamento() {
 
     let lucro = 0;
 
-    document.querySelectorAll(
-        "#produtosFechamento tr"
-    ).forEach(tr => {
+    document
+        .querySelectorAll("#produtosFechamento tr")
+        .forEach(tr => {
 
-        const id =
-            Number(tr.dataset.id);
+            const id = Number(tr.dataset.id);
 
-        const produto =
-            banco.produtos.find(
+            const produto = banco.produtos.find(
+
                 p => p.id === id
+
             );
 
-        const vendidos =
-            Number(
-                tr.querySelector(".vendidos").textContent
+            if (!produto) return;
+
+            const vendidos = Number(
+                tr.querySelector(".vendidos")
+                .textContent
             );
 
-        receita +=
-            vendidos * produto.precoVenda;
+            receita +=
+                vendidos * produto.precoVenda;
 
-        custo +=
-            vendidos * produto.precoCusto;
+            custo +=
+                vendidos * produto.precoCusto;
 
-        lucro +=
-            (produto.precoVenda - produto.precoCusto)
-            * vendidos;
+            lucro +=
+                vendidos *
+                (produto.precoVenda -
+                 produto.precoCusto);
+
+        });
+
+    const despesas =
+        Number(el.despesasExtras.value) || 0;
+
+    const taxas =
+        Number(el.taxas.value) || 0;
+
+    const impostos =
+        Number(el.impostos.value) || 0;
+
+    const totalDespesas =
+        despesas + taxas + impostos;
+
+    const lucroLiquido =
+        lucro - totalDespesas;
+
+    el.receitaFechamento.textContent =
+        moeda(receita);
+
+    el.custoFechamento.textContent =
+        moeda(custo);
+
+    el.despesasTotal.textContent =
+        moeda(totalDespesas);
+
+    el.lucroFechamento.textContent =
+        moeda(lucroLiquido);
+
+}
+
+/*====================================================
+    EVENTOS
+=====================================================*/
+
+function iniciarFechamento() {
+
+    carregarProdutosFechamento();
+
+    [
+        el.despesasExtras,
+        el.taxas,
+        el.impostos
+    ].forEach(campo => {
+
+        if (!campo) return;
+
+        campo.addEventListener(
+            "input",
+            atualizarResumoFechamento
+        );
 
     });
 
-    document.getElementById(
-        "receitaFechamento"
-    ).textContent =
-        formatarMoeda(receita);
+}
 
-    document.getElementById(
-        "custoFechamento"
-    ).textContent =
-        formatarMoeda(custo);
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
 
-    document.getElementById(
-        "lucroFechamento"
-    ).textContent =
-        formatarMoeda(lucro);
+const iniciarSistemaProdutos = iniciarSistema;
 
-               }
-/* =====================================================
-   MÓDULO 4 - SALVAR FECHAMENTO
-===================================================== */
+iniciarSistema = function () {
+
+    iniciarSistemaProdutos();
+
+    iniciarFechamento();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 4
+    SALVAR FECHAMENTO
+=====================================================*/
+
+/*====================================================
+    SALVAR FECHAMENTO
+=====================================================*/
 
 function salvarFechamento() {
 
-    const data = document.getElementById("dataFechamento").value;
+    if (!el.dataFechamento.value) {
 
-    const local = document.getElementById("local").value.trim();
-
-    if (data === "") {
-
-        alert("Informe a data.");
-
+        alert("Informe a data do fechamento.");
         return;
 
     }
 
-    if (local === "") {
+    if (!el.local.value.trim()) {
 
         alert("Informe o local.");
-
         return;
 
     }
 
-    const despesas = Number(
-        document.getElementById("despesasExtras").value
-    ) || 0;
-
-    const taxas = Number(
-        document.getElementById("taxas").value
-    ) || 0;
-
-    const impostos = Number(
-        document.getElementById("impostos").value
-    ) || 0;
-
-    const observacao =
-        document.getElementById("observacao").value.trim();
-
-    let itens = [];
+    let produtos = [];
 
     let receitaTotal = 0;
-
     let custoTotal = 0;
-
-    let lucroTotal = 0;
+    let lucroBruto = 0;
 
     document
         .querySelectorAll("#produtosFechamento tr")
@@ -949,6 +823,8 @@ function salvarFechamento() {
             const produto = banco.produtos.find(
                 p => p.id === id
             );
+
+            if (!produto) return;
 
             const inicial = Number(
                 tr.querySelector(".qtdInicial").value
@@ -972,9 +848,9 @@ function salvarFechamento() {
             const lucro =
                 receita - custo;
 
-            itens.push({
+            produtos.push({
 
-                produtoId: produto.id,
+                id: produto.id,
 
                 nome: produto.nome,
 
@@ -993,32 +869,41 @@ function salvarFechamento() {
             });
 
             receitaTotal += receita;
-
             custoTotal += custo;
-
-            lucroTotal += lucro;
+            lucroBruto += lucro;
 
         });
 
+    const despesas =
+        Number(el.despesasExtras.value) || 0;
+
+    const taxas =
+        Number(el.taxas.value) || 0;
+
+    const impostos =
+        Number(el.impostos.value) || 0;
+
     const lucroLiquido =
-
-        lucroTotal -
-
+        lucroBruto -
         despesas -
-
         taxas -
-
         impostos;
 
     const fechamento = {
 
         id: gerarId(),
 
-        data,
+        data: el.dataFechamento.value,
 
-        local,
+        local: el.local.value.trim(),
 
-        produtos: itens,
+        produtos,
+
+        receitaTotal,
+
+        custoTotal,
+
+        lucroBruto,
 
         despesas,
 
@@ -1026,15 +911,10 @@ function salvarFechamento() {
 
         impostos,
 
-        receitaTotal,
-
-        custoTotal,
-
-        lucroBruto: lucroTotal,
-
         lucroLiquido,
 
-        observacao
+        observacao:
+            el.observacao.value.trim()
 
     };
 
@@ -1048,81 +928,324 @@ function salvarFechamento() {
 
     mostrarRelatorio(fechamento);
 
+    limparFormularioFechamento();
+
     alert("Fechamento salvo com sucesso!");
 
 }
-/* =====================================================
-   MÓDULO 5 - DASHBOARD
-===================================================== */
+
+/*====================================================
+    LIMPAR FORMULÁRIO
+=====================================================*/
+
+function limparFormularioFechamento() {
+
+    el.dataFechamento.value = "";
+
+    el.local.value = "";
+
+    el.despesasExtras.value = 0;
+
+    el.taxas.value = 0;
+
+    el.impostos.value = 0;
+
+    el.observacao.value = "";
+
+    carregarProdutosFechamento();
+
+    atualizarResumoFechamento();
+
+}
+
+/*====================================================
+    EVENTOS
+=====================================================*/
+
+function iniciarSalvarFechamento() {
+
+    if (!el.btnSalvarFechamento) return;
+
+    el.btnSalvarFechamento.addEventListener(
+
+        "click",
+
+        salvarFechamento
+
+    );
+
+}
+
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaFechamento = iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaFechamento();
+
+    iniciarSalvarFechamento();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 5
+    DASHBOARD
+=====================================================*/
+
+let graficoVendas = null;
+
+/*====================================================
+    ATUALIZAR DASHBOARD
+=====================================================*/
 
 function atualizarDashboard() {
 
-    const venda = document.getElementById("vendaTotal");
-    const lucro = document.getElementById("lucroTotal");
-    const vendidos = document.getElementById("produtosVendidos");
-    const ultimo = document.getElementById("ultimoFechamento");
-
-    if (!venda) return;
+    if (!el.vendaTotal) return;
 
     if (banco.fechamentos.length === 0) {
 
-        venda.textContent = formatarMoeda(0);
+        el.vendaTotal.textContent = moeda(0);
+        el.lucroTotal.textContent = moeda(0);
+        el.produtosVendidos.textContent = "0";
+        el.ultimoFechamento.textContent = "Nenhum";
 
-        lucro.textContent = formatarMoeda(0);
-
-        vendidos.textContent = "0";
-
-        ultimo.textContent = "Nenhum";
+        atualizarGrafico();
+        atualizarAlertas();
 
         return;
 
     }
 
-    const fechamento = banco.fechamentos[
-        banco.fechamentos.length - 1
-    ];
+    const ultimo =
+        banco.fechamentos[
+            banco.fechamentos.length - 1
+        ];
 
-    venda.textContent =
-        formatarMoeda(fechamento.receitaTotal);
+    el.vendaTotal.textContent =
+        moeda(ultimo.receitaTotal);
 
-    lucro.textContent =
-        formatarMoeda(fechamento.lucroLiquido);
+    el.lucroTotal.textContent =
+        moeda(ultimo.lucroLiquido);
 
-    let totalVendidos = 0;
+    let vendidos = 0;
 
-    fechamento.produtos.forEach(produto => {
+    ultimo.produtos.forEach(produto => {
 
-        totalVendidos += produto.vendidos;
+        vendidos += produto.vendidos;
 
     });
 
-    vendidos.textContent = totalVendidos;
+    el.produtosVendidos.textContent =
+        vendidos;
 
-    ultimo.textContent =
-        `${fechamento.data} - ${fechamento.local}`;
+    el.ultimoFechamento.textContent =
+        `${dataBR(ultimo.data)} • ${ultimo.local}`;
+
+    atualizarGrafico();
+
+    atualizarAlertas();
 
 }
 
-/* =====================================================
-   MÓDULO 6 - HISTÓRICO
-===================================================== */
+/*====================================================
+    ALERTAS
+=====================================================*/
 
-/* ==========================
-   CARREGAR HISTÓRICO
-========================== */
+function atualizarAlertas() {
+
+    if (!el.alertasEstoque) return;
+
+    el.alertasEstoque.innerHTML = "";
+
+    if (banco.produtos.length === 0) {
+
+        el.alertasEstoque.innerHTML = `
+            <div class="alert-item">
+                Nenhum produto cadastrado.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const ultimo =
+        banco.fechamentos[
+            banco.fechamentos.length - 1
+        ];
+
+    if (!ultimo) {
+
+        el.alertasEstoque.innerHTML = `
+            <div class="alert-item">
+                Nenhum fechamento realizado.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    let alerta = false;
+
+    ultimo.produtos.forEach(item => {
+
+        if (item.final <= 5) {
+
+            alerta = true;
+
+            const div =
+                document.createElement("div");
+
+            div.className = "alert-item";
+
+            div.innerHTML = `
+                ⚠ <strong>${item.nome}</strong>
+                está com apenas
+                ${item.final} unidade(s).
+            `;
+
+            el.alertasEstoque.appendChild(div);
+
+        }
+
+    });
+
+    if (!alerta) {
+
+        el.alertasEstoque.innerHTML = `
+            <div class="alert-item">
+                ✅ Estoque em ordem.
+            </div>
+        `;
+
+    }
+
+}
+
+/*====================================================
+    GRÁFICO
+=====================================================*/
+
+function atualizarGrafico() {
+
+    const canvas =
+        document.getElementById("graficoVendas");
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    if (graficoVendas) {
+
+        graficoVendas.destroy();
+
+    }
+
+    const labels =
+        banco.fechamentos.map(f => dataBR(f.data));
+
+    const valores =
+        banco.fechamentos.map(
+            f => f.receitaTotal
+        );
+
+    graficoVendas = new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels,
+
+            datasets: [
+
+                {
+
+                    label: "Receita",
+
+                    data: valores,
+
+                    borderWidth: 3,
+
+                    tension: 0.3,
+
+                    fill: false
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    display: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+/*====================================================
+    INICIAR DASHBOARD
+=====================================================*/
+
+function iniciarDashboard() {
+
+    atualizarDashboard();
+
+}
+
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaDashboard =
+    iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaDashboard();
+
+    iniciarDashboard();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 6
+    HISTÓRICO
+=====================================================*/
+
+/*====================================================
+    CARREGAR HISTÓRICO
+=====================================================*/
 
 function carregarHistorico() {
 
-    const tabela =
-        document.getElementById("historicoTabela");
+    if (!el.historicoTabela) return;
 
-    if (!tabela) return;
-
-    tabela.innerHTML = "";
+    el.historicoTabela.innerHTML = "";
 
     if (banco.fechamentos.length === 0) {
 
-        tabela.innerHTML = `
+        el.historicoTabela.innerHTML = `
             <tr>
                 <td colspan="5">
                     Nenhum fechamento cadastrado.
@@ -1135,9 +1258,7 @@ function carregarHistorico() {
     }
 
     [...banco.fechamentos]
-
         .reverse()
-
         .forEach(fechamento => {
 
             criarLinhaHistorico(fechamento);
@@ -1146,104 +1267,235 @@ function carregarHistorico() {
 
 }
 
-
-/* ==========================
-   LINHA DA TABELA
-========================== */
+/*====================================================
+    CRIAR LINHA
+=====================================================*/
 
 function criarLinhaHistorico(fechamento) {
 
     const tr = document.createElement("tr");
 
-    /* Data */
+    tr.innerHTML = `
 
-    const tdData =
-        document.createElement("td");
+        <td>${dataBR(fechamento.data)}</td>
 
-    tdData.textContent =
-        fechamento.data;
+        <td>${fechamento.local}</td>
 
-    /* Local */
+        <td>${moeda(fechamento.receitaTotal)}</td>
 
-    const tdLocal =
-        document.createElement("td");
+        <td>${moeda(fechamento.lucroLiquido)}</td>
 
-    tdLocal.textContent =
-        fechamento.local;
+        <td>
 
-    /* Receita */
+            <button class="btn btn-primary btnAbrir">
+                Abrir
+            </button>
 
-    const tdReceita =
-        document.createElement("td");
+            <button class="btn btn-warning btnEditar">
+                Editar
+            </button>
 
-    tdReceita.textContent =
-        formatarMoeda(
-            fechamento.receitaTotal
-        );
+            <button class="btn btn-danger btnExcluir">
+                Excluir
+            </button>
 
-    /* Lucro */
+        </td>
 
-    const tdLucro =
-        document.createElement("td");
+    `;
 
-    tdLucro.textContent =
-        formatarMoeda(
-            fechamento.lucroLiquido
-        );
+    tr.querySelector(".btnAbrir")
+        .addEventListener("click", () => {
 
-    /* Botões */
+            abrirRelatorio(fechamento.id);
 
-    const tdAcoes =
-        document.createElement("td");
+        });
 
-    const btnAbrir =
-        document.createElement("button");
+    tr.querySelector(".btnEditar")
+        .addEventListener("click", () => {
 
-    btnAbrir.textContent = "Abrir";
+            editarFechamento(fechamento.id);
 
-    btnAbrir.className = "btn btn-primary";
+        });
 
-    btnAbrir.addEventListener(
+    tr.querySelector(".btnExcluir")
+        .addEventListener("click", () => {
 
-        "click",
+            excluirFechamento(fechamento.id);
 
-        () => abrirRelatorio(fechamento.id)
+        });
 
-    );
-
-    tdAcoes.append(btnAbrir);
-
-    tr.append(
-
-        tdData,
-
-        tdLocal,
-
-        tdReceita,
-
-        tdLucro,
-
-        tdAcoes
-
-    );
-
-    document
-
-        .getElementById("historicoTabela")
-
-        .append(tr);
+    el.historicoTabela.appendChild(tr);
 
 }
 
+/*====================================================
+    PESQUISA
+=====================================================*/
 
-/* ==========================
-   ABRIR RELATÓRIO
-========================== */
+function pesquisarHistorico() {
+
+    const texto =
+        el.pesquisaHistorico.value
+        .toLowerCase()
+        .trim();
+
+    const data =
+        el.filtroData.value;
+
+    el.historicoTabela.innerHTML = "";
+
+    banco.fechamentos
+
+        .filter(item => {
+
+            const pesquisa =
+
+                item.local
+                    .toLowerCase()
+                    .includes(texto)
+
+                ||
+
+                item.data
+                    .includes(texto);
+
+            const filtroData =
+
+                data === ""
+
+                ||
+
+                item.data === data;
+
+            return pesquisa && filtroData;
+
+        })
+
+        .reverse()
+
+        .forEach(item => {
+
+            criarLinhaHistorico(item);
+
+        });
+
+}
+
+/*====================================================
+    EXCLUIR
+=====================================================*/
+
+function excluirFechamento(id) {
+
+    if (!confirm(
+        "Excluir este fechamento?"
+    )) return;
+
+    banco.fechamentos =
+        banco.fechamentos.filter(
+
+            item => item.id !== id
+
+        );
+
+    salvarBanco();
+
+    atualizarDashboard();
+
+    carregarHistorico();
+
+}
+
+/*====================================================
+    EDITAR
+=====================================================*/
+
+function editarFechamento(id) {
+
+    const fechamento =
+        banco.fechamentos.find(
+
+            item => item.id === id
+
+        );
+
+    if (!fechamento) return;
+
+    const novoLocal = prompt(
+        "Local:",
+        fechamento.local
+    );
+
+    if (novoLocal === null) return;
+
+    fechamento.local =
+        novoLocal.trim();
+
+    salvarBanco();
+
+    carregarHistorico();
+
+    atualizarDashboard();
+
+}
+
+/*====================================================
+    EVENTOS
+=====================================================*/
+
+function iniciarHistorico() {
+
+    carregarHistorico();
+
+    if (el.pesquisaHistorico) {
+
+        el.pesquisaHistorico
+            .addEventListener(
+                "input",
+                pesquisarHistorico
+            );
+
+    }
+
+    if (el.filtroData) {
+
+        el.filtroData
+            .addEventListener(
+                "change",
+                pesquisarHistorico
+            );
+
+    }
+
+}
+
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaHistorico =
+    iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaHistorico();
+
+    iniciarHistorico();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 7
+    RELATÓRIOS
+=====================================================*/
+
+/*====================================================
+    ABRIR RELATÓRIO
+=====================================================*/
 
 function abrirRelatorio(id) {
 
     const fechamento =
-
         banco.fechamentos.find(
 
             item => item.id === id
@@ -1258,66 +1510,20 @@ function abrirRelatorio(id) {
 
 }
 
-
-/* ==========================
-   PESQUISAR
-========================== */
-
-function pesquisarHistorico(texto) {
-
-    const tabela =
-
-        document.getElementById("historicoTabela");
-
-    if (!tabela) return;
-
-    tabela.innerHTML = "";
-
-    texto = texto.toLowerCase();
-
-    const resultado =
-
-        banco.fechamentos.filter(item =>
-
-            item.data.toLowerCase().includes(texto)
-
-            ||
-
-            item.local.toLowerCase().includes(texto)
-
-        );
-
-    resultado
-
-        .reverse()
-
-        .forEach(fechamento => {
-
-            criarLinhaHistorico(fechamento);
-
-        });
-
-}
-
-/* =====================================================
-   MÓDULO 7 - RELATÓRIOS
-===================================================== */
-
-/* ==========================
-   MOSTRAR RELATÓRIO
-========================== */
+/*====================================================
+    MOSTRAR RELATÓRIO
+=====================================================*/
 
 function mostrarRelatorio(fechamento) {
 
-    const area = document.getElementById("areaRelatorio");
-
-    if (!area) return;
+    if (!el.areaRelatorio) return;
 
     let linhas = "";
 
     fechamento.produtos.forEach(produto => {
 
         linhas += `
+
             <tr>
 
                 <td>${produto.nome}</td>
@@ -1328,24 +1534,33 @@ function mostrarRelatorio(fechamento) {
 
                 <td>${produto.vendidos}</td>
 
-                <td>${formatarMoeda(produto.receita)}</td>
+                <td>${moeda(produto.receita)}</td>
 
-                <td>${formatarMoeda(produto.lucro)}</td>
+                <td>${moeda(produto.lucro)}</td>
 
             </tr>
+
         `;
 
     });
 
-    area.innerHTML = `
+    el.areaRelatorio.innerHTML = `
 
-        <h2>🌽 Delícias do Milho</h2>
+        <h2>
+            🌽 Delícias do Milho
+        </h2>
 
         <hr>
 
-        <p><strong>Data:</strong> ${fechamento.data}</p>
+        <p>
+            <strong>Data:</strong>
+            ${dataBR(fechamento.data)}
+        </p>
 
-        <p><strong>Local:</strong> ${fechamento.local}</p>
+        <p>
+            <strong>Local:</strong>
+            ${fechamento.local}
+        </p>
 
         <br>
 
@@ -1381,69 +1596,216 @@ function mostrarRelatorio(fechamento) {
 
         <br>
 
-        <h3>Resumo Financeiro</h3>
+        <h3>
+            Resumo Financeiro
+        </h3>
 
-        <p><strong>Receita:</strong> ${formatarMoeda(fechamento.receitaTotal)}</p>
+        <p>
+            <strong>Receita:</strong>
+            ${moeda(fechamento.receitaTotal)}
+        </p>
 
-        <p><strong>Custo:</strong> ${formatarMoeda(fechamento.custoTotal)}</p>
+        <p>
+            <strong>Custo:</strong>
+            ${moeda(fechamento.custoTotal)}
+        </p>
 
-        <p><strong>Lucro Bruto:</strong> ${formatarMoeda(fechamento.lucroBruto)}</p>
+        <p>
+            <strong>Lucro Bruto:</strong>
+            ${moeda(fechamento.lucroBruto)}
+        </p>
 
-        <p><strong>Despesas:</strong> ${formatarMoeda(fechamento.despesas)}</p>
+        <p>
+            <strong>Despesas:</strong>
+            ${moeda(fechamento.despesas)}
+        </p>
 
-        <p><strong>Taxas:</strong> ${formatarMoeda(fechamento.taxas)}</p>
+        <p>
+            <strong>Taxas:</strong>
+            ${moeda(fechamento.taxas)}
+        </p>
 
-        <p><strong>Impostos:</strong> ${formatarMoeda(fechamento.impostos)}</p>
+        <p>
+            <strong>Impostos:</strong>
+            ${moeda(fechamento.impostos)}
+        </p>
 
         <hr>
 
         <h2>
-
             Lucro Líquido:
-            ${formatarMoeda(fechamento.lucroLiquido)}
-
+            ${moeda(fechamento.lucroLiquido)}
         </h2>
 
         <br>
 
         <p>
-
             <strong>Observações:</strong>
-
         </p>
 
         <p>
-
-            ${fechamento.observacao || "Nenhuma observação."}
-
+            ${fechamento.observacao ||
+              "Nenhuma observação."}
         </p>
 
     `;
 
 }
 
-
-/* ==========================
-   IMPRIMIR
-========================== */
+/*====================================================
+    IMPRIMIR
+=====================================================*/
 
 function imprimirRelatorio() {
+
+    if (!el.areaRelatorio) {
+
+        alert(
+            "Nenhum relatório disponível."
+        );
+
+        return;
+
+    }
 
     window.print();
 
 }
 
-/* =====================================================
-   MÓDULO 8 - BACKUP E CONFIGURAÇÕES
-===================================================== */
+/*====================================================
+    EXPORTAR PDF
+=====================================================*/
 
-/* ==========================
-   EXPORTAR BACKUP
-========================== */
+function exportarPDF() {
+
+    if (!el.areaRelatorio) {
+
+        alert(
+            "Nenhum relatório disponível."
+        );
+
+        return;
+
+    }
+
+    const janela = window.open(
+        "",
+        "_blank"
+    );
+
+    janela.document.write(`
+
+        <html>
+
+            <head>
+
+                <title>
+                    Relatório
+                </title>
+
+                <style>
+
+                    body{
+                        font-family:Arial,sans-serif;
+                        padding:20px;
+                    }
+
+                    table{
+                        width:100%;
+                        border-collapse:collapse;
+                    }
+
+                    th,td{
+                        border:1px solid #ccc;
+                        padding:8px;
+                        text-align:center;
+                    }
+
+                    h2,h3{
+                        text-align:center;
+                    }
+
+                </style>
+
+            </head>
+
+            <body>
+
+                ${el.areaRelatorio.innerHTML}
+
+            </body>
+
+        </html>
+
+    `);
+
+    janela.document.close();
+
+    janela.focus();
+
+    janela.print();
+
+}
+
+/*====================================================
+    EVENTOS
+=====================================================*/
+
+function iniciarRelatorios() {
+
+    if (el.btnImprimir) {
+
+        el.btnImprimir
+            .addEventListener(
+                "click",
+                imprimirRelatorio
+            );
+
+    }
+
+    if (el.btnExportarPDF) {
+
+        el.btnExportarPDF
+            .addEventListener(
+                "click",
+                exportarPDF
+            );
+
+    }
+
+}
+
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaRelatorio =
+    iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaRelatorio();
+
+    iniciarRelatorios();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 8
+    BACKUP E RESTAURAÇÃO
+=====================================================*/
+
+/*====================================================
+    EXPORTAR BACKUP
+=====================================================*/
 
 function exportarBackup() {
 
-    const dados = JSON.stringify(banco, null, 2);
+    const dados = JSON.stringify(
+        banco,
+        null,
+        2
+    );
 
     const blob = new Blob(
         [dados],
@@ -1452,13 +1814,21 @@ function exportarBackup() {
         }
     );
 
-    const url = URL.createObjectURL(blob);
+    const url =
+        URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
+    const link =
+        document.createElement("a");
+
+    const hoje =
+        new Date()
+        .toISOString()
+        .slice(0,10);
 
     link.href = url;
 
-    link.download = "backup-delicias-do-milho.json";
+    link.download =
+        `backup-delicias-do-milho-${hoje}.json`;
 
     link.click();
 
@@ -1466,73 +1836,108 @@ function exportarBackup() {
 
 }
 
-
-/* ==========================
-   RESTAURAR BACKUP
-========================== */
+/*====================================================
+    RESTAURAR BACKUP
+=====================================================*/
 
 function restaurarBackup() {
 
-    const input = document.createElement("input");
+    const input =
+        document.createElement("input");
 
     input.type = "file";
 
     input.accept = ".json";
 
-    input.addEventListener("change", event => {
+    input.addEventListener(
 
-        const arquivo = event.target.files[0];
+        "change",
 
-        if (!arquivo) return;
+        evento => {
 
-        const leitor = new FileReader();
+            const arquivo =
+                evento.target.files[0];
 
-        leitor.onload = () => {
+            if (!arquivo) return;
 
-            try {
+            const leitor =
+                new FileReader();
 
-                banco = JSON.parse(leitor.result);
+            leitor.onload = () => {
 
-                salvarBanco();
+                try {
 
-                iniciarSistema();
+                    const dados =
+                        JSON.parse(
+                            leitor.result
+                        );
 
-                alert("Backup restaurado com sucesso.");
+                    if (
+                        !dados.produtos ||
+                        !dados.fechamentos
+                    ) {
 
-            }
+                        throw "inválido";
 
-            catch {
+                    }
 
-                alert("Arquivo inválido.");
+                    banco = dados;
 
-            }
+                    salvarBanco();
 
-        };
+                    carregarProdutos();
 
-        leitor.readAsText(arquivo);
+                    carregarProdutosFechamento();
 
-    });
+                    carregarHistorico();
+
+                    atualizarDashboard();
+
+                    aplicarTema();
+
+                    alert(
+                        "Backup restaurado com sucesso!"
+                    );
+
+                }
+
+                catch {
+
+                    alert(
+                        "Arquivo inválido."
+                    );
+
+                }
+
+            };
+
+            leitor.readAsText(arquivo);
+
+        }
+
+    );
 
     input.click();
 
 }
 
-
-/* ==========================
-   LIMPAR DADOS
-========================== */
+/*====================================================
+    LIMPAR TODOS OS DADOS
+=====================================================*/
 
 function limparDados() {
 
     const confirmar = confirm(
 
-        "Deseja realmente apagar todos os dados?"
+        "Tem certeza que deseja apagar TODOS os dados?"
 
     );
 
     if (!confirmar) return;
 
-    localStorage.removeItem(APP.storage);
+    localStorage.removeItem(
+        APP.storage
+    );
 
     banco = {
 
@@ -1550,18 +1955,6 @@ function limparDados() {
 
     salvarBanco();
 
-    iniciarSistema();
-
-}
-
-function iniciarSistema(){
-
-    carregarBanco();
-
-    carregarTema();
-
-    atualizarData();
-
     carregarProdutos();
 
     carregarProdutosFechamento();
@@ -1570,4 +1963,273 @@ function iniciarSistema(){
 
     atualizarDashboard();
 
+    if (el.areaRelatorio) {
+
+        el.areaRelatorio.innerHTML =
+            "Nenhum relatório disponível.";
+
+    }
+
+    alert(
+        "Todos os dados foram apagados."
+    );
+
 }
+
+/*====================================================
+    EVENTOS
+=====================================================*/
+
+function iniciarBackup() {
+
+    if (el.btnExportarBackup) {
+
+        el.btnExportarBackup
+            .addEventListener(
+                "click",
+                exportarBackup
+            );
+
+    }
+
+    if (el.btnRestaurarBackup) {
+
+        el.btnRestaurarBackup
+            .addEventListener(
+                "click",
+                restaurarBackup
+            );
+
+    }
+
+    if (el.btnLimparDados) {
+
+        el.btnLimparDados
+            .addEventListener(
+                "click",
+                limparDados
+            );
+
+    }
+
+}
+
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaBackup =
+    iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaBackup();
+
+    iniciarBackup();
+
+};
+/*====================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 9
+    CONFIGURAÇÕES E UTILIDADES
+=====================================================*/
+
+/*====================================================
+    MENU MOBILE
+=====================================================*/
+
+function alternarMenuMobile() {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    if (!sidebar) return;
+
+    sidebar.classList.toggle("open");
+
+}
+
+/*====================================================
+    FECHAR MENU AO CLICAR
+=====================================================*/
+
+function fecharMenuMobile() {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    if (!sidebar) return;
+
+    if (window.innerWidth <= 768) {
+
+        sidebar.classList.remove("open");
+
+    }
+
+}
+
+/*====================================================
+    MELHORAR ABRIR PÁGINA
+=====================================================*/
+
+const abrirPaginaOriginal = abrirPagina;
+
+abrirPagina = function (pagina) {
+
+    abrirPaginaOriginal(pagina);
+
+    switch (pagina) {
+
+        case "dashboard":
+            atualizarDashboard();
+            break;
+
+        case "produtos":
+            carregarProdutos();
+            break;
+
+        case "fechamento":
+            carregarProdutosFechamento();
+            atualizarResumoFechamento();
+            break;
+
+        case "historico":
+            carregarHistorico();
+            break;
+
+        case "relatorio":
+
+            if (
+                banco.fechamentos.length > 0
+            ) {
+
+                mostrarRelatorio(
+
+                    banco.fechamentos[
+                        banco.fechamentos.length - 1
+                    ]
+
+                );
+
+            }
+
+            break;
+
+    }
+
+    fecharMenuMobile();
+
+};
+
+/*====================================================
+    DATA PADRÃO
+=====================================================*/
+
+function definirDataHoje() {
+
+    if (!el.dataFechamento) return;
+
+    const hoje =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    el.dataFechamento.value = hoje;
+
+}
+
+/*====================================================
+    ATALHOS
+=====================================================*/
+
+function iniciarAtalhos() {
+
+    document.addEventListener(
+
+        "keydown",
+
+        evento => {
+
+            if (
+                evento.ctrlKey &&
+                evento.key === "s"
+            ) {
+
+                evento.preventDefault();
+
+                if (
+
+                    document
+                        .getElementById("fechamento")
+                        .classList.contains("active-page")
+
+                ) {
+
+                    salvarFechamento();
+
+                }
+
+            }
+
+        }
+
+    );
+
+}
+
+/*====================================================
+    RESPONSIVIDADE
+=====================================================*/
+
+function iniciarResponsividade() {
+
+    window.addEventListener(
+
+        "resize",
+
+        fecharMenuMobile
+
+    );
+
+}
+
+/*====================================================
+    EVENTOS
+=====================================================*/
+
+function iniciarConfiguracoes() {
+
+    definirDataHoje();
+
+    iniciarAtalhos();
+
+    iniciarResponsividade();
+
+    if (el.btnMenuMobile) {
+
+        el.btnMenuMobile.addEventListener(
+
+            "click",
+
+            alternarMenuMobile
+
+        );
+
+    }
+
+}
+
+/*====================================================
+    INTEGRAÇÃO
+=====================================================*/
+
+const iniciarSistemaConfig =
+    iniciarSistema;
+
+iniciarSistema = function () {
+
+    iniciarSistemaConfig();
+
+    iniciarConfiguracoes();
+
+};
