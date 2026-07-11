@@ -1,107 +1,160 @@
-/* ================================
+/* ==========================================
    DELÍCIAS DO MILHO
-   STYLE PRINCIPAL
-================================ */
+   SISTEMA ADMINISTRATIVO PREMIUM
+========================================== */
 
 
-/* Reset */
+/* RESET */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 
 
 :root {
 
-    --amarelo: #f4b400;
-    --verde: #3c8d40;
-    --marrom: #8b5a2b;
+    --amarelo:#f5b700;
+    --amarelo-claro:#ffd65a;
 
-    --fundo: #f8f7f2;
-    --card: #ffffff;
-    --texto: #333;
+    --verde:#3d8b40;
+    --verde-escuro:#245d29;
+
+    --marrom:#8b5e34;
+
+    --fundo:#f4f6ef;
+
+    --branco:#ffffff;
+
+    --texto:#333;
+
+    --borda:#e8e8e8;
 
     --sombra:
-    0 5px 15px rgba(0,0,0,0.1);
+    0 10px 30px rgba(0,0,0,.08);
+
+    --transicao:.3s ease;
 
 }
 
 
 
-/* Corpo */
+/* ==========================================
+   BODY
+========================================== */
+
 
 body {
 
-    background: var(--fundo);
-    color: var(--texto);
+    background:
+    linear-gradient(
+        135deg,
+        #f8f7f0,
+        #eef5e9
+    );
 
-    display: flex;
+    color:var(--texto);
 
-    min-height: 100vh;
+    min-height:100vh;
+
+    display:flex;
 
 }
 
 
 
-/* ================================
-   MENU LATERAL
-================================ */
+/* ==========================================
+   SIDEBAR
+========================================== */
 
 
 .sidebar {
 
-    width: 260px;
+    width:270px;
+
+    height:100vh;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    padding:30px 20px;
 
     background:
+
     linear-gradient(
         180deg,
         var(--verde),
-        #28662b
+        var(--verde-escuro)
     );
 
     color:white;
-
-    padding:25px;
 
     display:flex;
 
     flex-direction:column;
 
-    position:fixed;
+    box-shadow:
 
-    height:100vh;
+    8px 0 30px rgba(0,0,0,.15);
+
+    z-index:10;
 
 }
 
+
+
+/* LOGO */
 
 
 .logo {
 
     text-align:center;
 
-    margin-bottom:40px;
+    margin-bottom:45px;
 
 }
 
 
-.logo:first-letter {
+.logo span {
 
-    font-size:40px;
+    font-size:55px;
+
+    display:block;
+
+    animation:
+
+    flutuar 3s infinite;
 
 }
+
+
+@keyframes flutuar {
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+}
+
 
 
 .logo h2 {
 
-    font-size:20px;
+    margin-top:10px;
+
+    font-size:22px;
+
+    letter-spacing:1px;
 
 }
 
 
 
+/* MENU */
 
 
 .sidebar nav {
@@ -118,24 +171,27 @@ body {
 
 .sidebar button {
 
-    border:none;
-
     background:
-    rgba(255,255,255,0.15);
+
+    rgba(255,255,255,.15);
+
+    backdrop-filter:blur(10px);
 
     color:white;
 
-    padding:14px;
+    border:none;
 
-    border-radius:10px;
+    padding:15px;
 
-    cursor:pointer;
-
-    text-align:left;
+    border-radius:14px;
 
     font-size:15px;
 
-    transition:.3s;
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:var(--transicao);
 
 }
 
@@ -147,10 +203,15 @@ body {
 
     color:var(--verde);
 
-    transform:translateX(5px);
+    transform:
+
+    translateX(8px);
 
 }
 
+
+
+/* BOTÃO TEMA */
 
 
 .tema {
@@ -163,16 +224,16 @@ body {
 
 
 
-/* ================================
+/* ==========================================
    CONTEÚDO
-================================ */
+========================================== */
 
 
 .conteudo {
 
-    margin-left:260px;
+    margin-left:270px;
 
-    padding:30px;
+    padding:35px;
 
     width:100%;
 
@@ -183,6 +244,10 @@ body {
 .pagina {
 
     display:none;
+
+    animation:
+
+    aparecer .4s;
 
 }
 
@@ -196,11 +261,32 @@ body {
 
 
 
+@keyframes aparecer {
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
 
 
 header {
 
-    margin-bottom:30px;
+    margin-bottom:35px;
 
 }
 
@@ -208,7 +294,19 @@ header {
 
 header h1 {
 
-    font-size:32px;
+    font-size:34px;
+
+    color:var(--verde-escuro);
+
+}
+
+
+
+header p {
+
+    margin-top:8px;
+
+    color:#777;
 
 }
 
@@ -216,9 +314,9 @@ header h1 {
 
 
 
-/* ================================
-   CARDS DASHBOARD
-================================ */
+/* ==========================================
+   CARDS
+========================================== */
 
 
 .cards {
@@ -226,9 +324,10 @@ header h1 {
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
 
-    gap:20px;
+    repeat(auto-fit,minmax(240px,1fr));
+
+    gap:25px;
 
 }
 
@@ -236,15 +335,42 @@ header h1 {
 
 .card {
 
-    background:var(--card);
+
+    background:
+
+    rgba(255,255,255,.8);
+
+    backdrop-filter:
+
+    blur(10px);
+
 
     padding:25px;
 
-    border-radius:18px;
+
+    border-radius:22px;
+
 
     box-shadow:var(--sombra);
 
-    border-left:6px solid var(--amarelo);
+
+    border-left:
+
+    7px solid var(--amarelo);
+
+
+    transition:var(--transicao);
+
+
+}
+
+
+
+.card:hover {
+
+    transform:
+
+    translateY(-8px);
 
 }
 
@@ -252,9 +378,9 @@ header h1 {
 
 .card h3 {
 
-    margin-bottom:15px;
-
     font-size:18px;
+
+    margin-bottom:15px;
 
 }
 
@@ -262,7 +388,7 @@ header h1 {
 
 .card p {
 
-    font-size:28px;
+    font-size:32px;
 
     font-weight:bold;
 
@@ -274,32 +400,42 @@ header h1 {
 
 
 
-/* ================================
-   GRAFICOS E ALERTAS
-================================ */
+/* ==========================================
+   PAINÉIS
+========================================== */
 
 
 .grafico,
-.alertas {
+.alertas,
+#areaRelatorio {
+
 
     background:white;
 
-    margin-top:30px;
 
-    padding:25px;
+    padding:30px;
 
-    border-radius:18px;
+
+    border-radius:22px;
+
 
     box-shadow:var(--sombra);
 
+
+    margin-top:30px;
+
+
 }
+
 
 
 
 .grafico h2,
 .alertas h2 {
 
-    margin-bottom:15px;
+    margin-bottom:20px;
+
+    color:var(--verde-escuro);
 
 }
 
@@ -307,32 +443,36 @@ header h1 {
 
 
 
-/* ================================
-   FORMULARIOS
-================================ */
+/* ==========================================
+   FORMULÁRIOS
+========================================== */
 
 
 .formulario {
 
     background:white;
 
-    padding:25px;
 
-    border-radius:18px;
+    padding:30px;
+
+
+    max-width:550px;
+
+
+    border-radius:22px;
+
 
     box-shadow:var(--sombra);
+
 
     display:flex;
 
     flex-direction:column;
 
-    gap:15px;
-
-    max-width:500px;
-
-    margin-bottom:30px;
+    gap:18px;
 
 }
+
 
 
 
@@ -340,26 +480,48 @@ input,
 textarea,
 select {
 
-    padding:13px;
+
+    width:100%;
+
+
+    padding:15px;
+
+
+    border-radius:12px;
+
 
     border:
 
-    1px solid #ddd;
+    1px solid var(--borda);
 
-    border-radius:10px;
 
     font-size:15px;
 
+
     outline:none;
+
+
+    transition:.3s;
+
 
 }
 
 
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
 
-    border-color:var(--verde);
+
+    border-color:
+
+    var(--verde);
+
+
+    box-shadow:
+
+    0 0 0 3px rgba(61,139,64,.15);
+
 
 }
 
@@ -369,15 +531,15 @@ textarea:focus {
 
 textarea {
 
-    min-height:100px;
+    min-height:120px;
 
 }
 
 
 
 
-
 button {
+
 
     cursor:pointer;
 
@@ -390,19 +552,37 @@ button {
 .formulario button,
 section button {
 
-    background:var(--verde);
+
+    background:
+
+    linear-gradient(
+
+    135deg,
+
+    var(--verde),
+
+    var(--verde-escuro)
+
+    );
+
 
     color:white;
 
+
     border:none;
 
-    padding:14px 20px;
 
-    border-radius:10px;
+    padding:15px 22px;
 
-    font-size:15px;
+
+    border-radius:12px;
+
+
+    font-weight:bold;
+
 
     transition:.3s;
+
 
 }
 
@@ -411,7 +591,11 @@ section button {
 .formulario button:hover,
 section button:hover {
 
-    background:#28662b;
+
+    transform:
+
+    scale(1.03);
+
 
 }
 
@@ -419,26 +603,34 @@ section button:hover {
 
 
 
-/* ================================
+/* ==========================================
    TABELAS
-================================ */
+========================================== */
 
 
 table {
 
+
     width:100%;
 
-    background:white;
 
     border-collapse:collapse;
 
-    margin-top:20px;
 
-    border-radius:15px;
+    margin-top:25px;
+
+
+    background:white;
+
+
+    border-radius:20px;
+
 
     overflow:hidden;
 
+
     box-shadow:var(--sombra);
+
 
 }
 
@@ -446,11 +638,17 @@ table {
 
 th {
 
-    background:var(--verde);
+
+    background:
+
+    var(--verde);
+
 
     color:white;
 
-    padding:15px;
+
+    padding:18px;
+
 
 }
 
@@ -458,11 +656,17 @@ th {
 
 td {
 
-    padding:15px;
+
+    padding:16px;
+
 
     text-align:center;
 
-    border-bottom:1px solid #eee;
+
+    border-bottom:
+
+    1px solid #eee;
+
 
 }
 
@@ -470,30 +674,9 @@ td {
 
 tr:hover {
 
+
     background:#fafafa;
 
-}
-
-
-
-
-
-/* ================================
-   RELATÓRIO
-================================ */
-
-
-#areaRelatorio {
-
-    background:white;
-
-    padding:30px;
-
-    border-radius:18px;
-
-    min-height:300px;
-
-    box-shadow:var(--sombra);
 
 }
 
@@ -501,41 +684,62 @@ tr:hover {
 
 
 
-/* ================================
-   TEMA ESCURO
-================================ */
+/* ==========================================
+   DARK MODE
+========================================== */
 
 
 body.dark {
 
-    --fundo:#111;
 
-    --card:#1e1e1e;
+    --fundo:#101410;
 
     --texto:white;
 
+
 }
 
 
 
-body.dark table,
+body.dark .card,
 body.dark .grafico,
 body.dark .alertas,
 body.dark .formulario,
+body.dark table,
 body.dark #areaRelatorio {
 
-    background:#1e1e1e;
+
+    background:#1c211c;
 
     color:white;
+
+
+}
+
+
+
+body.dark header h1 {
+
+    color:var(--amarelo);
 
 }
 
 
 
 
-/* ================================
-   RESPONSIVIDADE
-================================ */
+body.dark td {
+
+    border-color:#333;
+
+}
+
+
+
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
 
 
 @media(max-width:900px){
@@ -543,12 +747,13 @@ body.dark #areaRelatorio {
 
 .sidebar {
 
-    width:80px;
 
-    padding:15px;
+    width:85px;
+
+    padding:20px 10px;
+
 
 }
-
 
 
 .logo h2 {
@@ -559,11 +764,21 @@ body.dark #areaRelatorio {
 
 
 
+.logo span {
+
+    font-size:40px;
+
+}
+
+
+
 .sidebar button {
+
 
     font-size:0;
 
     text-align:center;
+
 
 }
 
@@ -571,7 +786,9 @@ body.dark #areaRelatorio {
 
 .sidebar button::first-letter {
 
-    font-size:22px;
+
+    font-size:24px;
+
 
 }
 
@@ -579,27 +796,22 @@ body.dark #areaRelatorio {
 
 .conteudo {
 
-    margin-left:80px;
+
+    margin-left:85px;
 
     padding:20px;
 
-}
-
-
 
 }
+
+
+
+}
+
 
 
 
 @media(max-width:600px){
-
-
-.cards {
-
-    grid-template-columns:1fr;
-
-}
-
 
 
 .conteudo {
@@ -610,9 +822,26 @@ body.dark #areaRelatorio {
 
 
 
+header h1 {
+
+    font-size:25px;
+
+}
+
+
+
+.cards {
+
+    grid-template-columns:1fr;
+
+}
+
+
+
 table {
 
-    font-size:13px;
+
+    font-size:12px;
 
 }
 
