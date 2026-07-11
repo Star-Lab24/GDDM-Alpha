@@ -1,142 +1,129 @@
-/* ==========================================
-   DELÍCIAS DO MILHO
-   RESPONSIVE SYSTEM UI
-   Desktop | Notebook | iPad | Mobile
-========================================== */
+/*==================================================
+    DELÍCIAS DO MILHO
+    CSS - PARTE 1
+==================================================*/
 
 
-/* RESET */
+/*====================
+RESET
+====================*/
 
-* {
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:"Segoe UI", Arial, sans-serif;
 }
 
-
-html {
+html{
     scroll-behavior:smooth;
 }
 
-
-body {
-
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
     background:#f5f6ef;
-
     color:#333;
-
-    min-height:100vh;
-
     display:flex;
-
+    min-height:100vh;
 }
 
 
+/*====================
+VARIÁVEIS
+====================*/
 
-/* ==========================================
-   VARIÁVEIS
-========================================== */
+:root{
 
+    --verde:#3b8d2f;
+    --verde-escuro:#2b6b23;
 
-:root {
+    --amarelo:#f6c343;
+    --amarelo-escuro:#e4ad14;
 
-    --verde:#3d8b40;
-    --verde-dark:#28652d;
+    --branco:#ffffff;
 
-    --amarelo:#f5b700;
-
-    --branco:#fff;
-
-    --fundo:#f5f6ef;
+    --cinza:#ececec;
 
     --texto:#333;
 
-    --sombra:
-    0 8px 25px rgba(0,0,0,.10);
-
     --radius:18px;
 
-    --transition:.3s ease;
+    --sombra:
+    0 8px 25px rgba(0,0,0,.08);
 
+    --transicao:.3s;
 }
 
 
+/*====================
+SIDEBAR
+====================*/
 
+.sidebar{
 
-
-/* ==========================================
-   SIDEBAR DESKTOP
-========================================== */
-
-
-.sidebar {
-
-    width:270px;
-
-    height:100vh;
+    width:260px;
 
     position:fixed;
 
+    top:0;
     left:0;
 
-    top:0;
+    height:100vh;
 
-    background:
-
-    linear-gradient(
+    background:linear-gradient(
         180deg,
         var(--verde),
-        var(--verde-dark)
+        var(--verde-escuro)
     );
-
-
-    color:white;
-
-    padding:25px 20px;
 
     display:flex;
 
     flex-direction:column;
 
-    z-index:1000;
+    padding:25px;
 
+    color:white;
+
+    box-shadow:5px 0 20px rgba(0,0,0,.15);
 
 }
 
 
+/*====================
+LOGO
+====================*/
 
-.logo {
+.logo{
 
     text-align:center;
 
-    margin-bottom:40px;
+    margin-bottom:35px;
 
 }
 
+.logo span{
 
+    font-size:52px;
 
-.logo span {
-
-    font-size:45px;
+    display:block;
 
 }
 
-
-
-.logo h2 {
-
-    font-size:20px;
+.logo h2{
 
     margin-top:10px;
 
+    font-size:22px;
+
+    font-weight:700;
+
 }
 
 
+/*====================
+MENU
+====================*/
 
-
-
-.sidebar nav {
+.sidebar nav{
 
     display:flex;
 
@@ -146,192 +133,164 @@ body {
 
 }
 
-
-
-
-.sidebar button {
+.sidebar button{
 
     width:100%;
 
-    padding:14px;
+    padding:15px;
 
     border:none;
 
     border-radius:12px;
 
-
-    background:
-
-    rgba(255,255,255,.15);
-
+    background:rgba(255,255,255,.12);
 
     color:white;
 
     cursor:pointer;
 
+    font-size:15px;
+
     text-align:left;
 
-
-    transition:var(--transition);
-
+    transition:var(--transicao);
 
 }
 
-
-
-.sidebar button:hover {
+.sidebar button:hover{
 
     background:white;
 
     color:var(--verde);
 
+    transform:translateX(5px);
+
 }
 
-
-
-
-
-.tema {
+.tema{
 
     margin-top:auto;
 
 }
 
 
+/*====================
+CONTEÚDO
+====================*/
 
+.conteudo{
 
+    margin-left:260px;
 
-/* ==========================================
-   ÁREA PRINCIPAL
-========================================== */
+    width:calc(100% - 260px);
 
-
-.conteudo {
-
-    margin-left:270px;
-
-    padding:30px;
-
-    width:calc(100% - 270px);
-
-    min-height:100vh;
+    padding:35px;
 
 }
 
 
+/*====================
+PÁGINAS
+====================*/
 
-
-
-.pagina {
+.pagina{
 
     display:none;
 
 }
 
-
-.pagina.ativa {
+.pagina.ativa{
 
     display:block;
 
 }
 
 
+/*====================
+HEADER
+====================*/
 
-
-
-header {
+header{
 
     margin-bottom:30px;
 
 }
 
+header h1{
 
-header h1 {
+    color:var(--verde-escuro);
 
-    font-size:clamp(22px,3vw,36px);
+    font-size:34px;
 
-    color:var(--verde-dark);
+    margin-bottom:10px;
+
+}
+
+header p{
+
+    color:#777;
 
 }
 
 
+/*====================
+CARDS
+====================*/
 
-
-
-/* ==========================================
-   CARDS
-========================================== */
-
-
-.cards {
-
+.cards{
 
     display:grid;
 
-
     grid-template-columns:
-
-    repeat(
-        auto-fit,
-        minmax(220px,1fr)
-    );
-
+    repeat(auto-fit,minmax(220px,1fr));
 
     gap:20px;
 
-
 }
 
 
+/*====================
+CARD
+====================*/
 
-
-
-.card {
-
+.card{
 
     background:white;
 
+    border-radius:18px;
+
     padding:25px;
-
-    border-radius:var(--radius);
-
 
     box-shadow:var(--sombra);
 
+    border-left:6px solid var(--amarelo);
 
-    border-left:
-
-    6px solid var(--amarelo);
-
-
-    transition:var(--transition);
-
+    transition:var(--transicao);
 
 }
 
+.card:hover{
 
+    transform:translateY(-6px);
 
-.card:hover {
-
-    transform:translateY(-5px);
-
-}
-
-
-
-.card h3 {
-
-    font-size:17px;
-
-    margin-bottom:15px;
+    box-shadow:
+    0 12px 35px rgba(0,0,0,.15);
 
 }
 
+.card h3{
 
+    font-size:18px;
 
-.card p {
+    margin-bottom:18px;
 
-    font-size:30px;
+    color:#555;
+
+}
+
+.card p{
+
+    font-size:32px;
 
     font-weight:bold;
 
@@ -340,610 +299,807 @@ header h1 {
 }
 
 
-
-
-
-/* ==========================================
-   PAINÉIS
-========================================== */
-
+/*====================
+PAINÉIS
+====================*/
 
 .grafico,
-.alertas,
-#areaRelatorio {
-
-
-    background:white;
-
-    padding:25px;
-
+.alertas{
 
     margin-top:25px;
 
-
-    border-radius:var(--radius);
-
-
-    box-shadow:var(--sombra);
-
-
-    width:100%;
-
-
-}
-
-
-
-
-
-/* ==========================================
-   FORMULÁRIOS
-========================================== */
-
-
-.formulario {
-
-
-    width:100%;
-
-    max-width:600px;
-
-
     background:white;
-
 
     padding:25px;
 
-
-    border-radius:var(--radius);
-
+    border-radius:18px;
 
     box-shadow:var(--sombra);
 
+}
+
+.grafico h2,
+.alertas h2{
+
+    color:var(--verde-escuro);
+
+    margin-bottom:15px;
+
+}
+
+#graficoVendas,
+#alertasEstoque{
+
+    color:#666;
+
+    line-height:1.6;
+
+}
+
+/*==================================================
+    DELÍCIAS DO MILHO
+    CSS - PARTE 2
+    Formulários • Botões • Tabelas
+==================================================*/
+
+
+/*====================
+TÍTULOS DAS SEÇÕES
+====================*/
+
+section h1{
+    color:var(--verde-escuro);
+    margin-bottom:20px;
+}
+
+section h2{
+    color:var(--verde);
+    margin:30px 0 15px;
+}
+
+
+/*====================
+FORMULÁRIO
+====================*/
+
+.formulario{
+
+    width:100%;
+    max-width:650px;
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--sombra);
 
     display:flex;
 
-
     flex-direction:column;
 
+    gap:16px;
 
-    gap:15px;
-
+    margin-bottom:30px;
 
 }
 
 
-
+/*====================
+INPUTS
+====================*/
 
 input,
 textarea,
-select {
-
+select{
 
     width:100%;
 
+    padding:14px 16px;
 
-    padding:14px;
-
+    border:1px solid #d9d9d9;
 
     border-radius:12px;
 
-
-    border:
-
-    1px solid #ddd;
-
-
     font-size:16px;
 
+    outline:none;
+
+    transition:var(--transicao);
+
+    background:#fff;
+
+    color:var(--texto);
 
 }
 
+input:focus,
+textarea:focus,
+select:focus{
 
+    border-color:var(--verde);
 
-textarea {
+    box-shadow:0 0 0 3px rgba(59,141,47,.15);
+
+}
+
+textarea{
+
+    resize:vertical;
 
     min-height:120px;
 
 }
 
 
+/*====================
+BOTÕES
+====================*/
 
+button{
 
+    font-family:inherit;
+
+}
 
 .formulario button,
-section button {
-
-
-    width:100%;
-
+section button{
 
     padding:15px;
-
 
     border:none;
 
-
     border-radius:12px;
-
 
     background:var(--verde);
 
-
-    color:white;
-
+    color:#fff;
 
     font-size:16px;
 
+    font-weight:600;
 
     cursor:pointer;
 
+    transition:var(--transicao);
+
+    margin-top:10px;
+
+}
+
+.formulario button:hover,
+section button:hover{
+
+    background:var(--verde-escuro);
+
+    transform:translateY(-2px);
+
+}
+
+.formulario button:active,
+section button:active{
+
+    transform:scale(.98);
 
 }
 
 
+/*====================
+ÁREA FECHAMENTO
+====================*/
 
+#produtosFechamento{
 
+    display:flex;
 
-/* ==========================================
-   TABELAS RESPONSIVAS
-========================================== */
+    flex-direction:column;
 
+    gap:15px;
 
-.table-container {
-
-
-    width:100%;
-
-
-    overflow-x:auto;
-
+    margin-bottom:25px;
 
 }
 
 
+/*====================
+RESUMO
+====================*/
 
-table {
+.resumo-fechamento{
 
+    margin:25px 0;
 
-    min-width:700px;
+    padding:20px;
 
+    background:#fff;
 
-    width:100%;
+    border-left:6px solid var(--amarelo);
 
-
-    background:white;
-
-
-    border-collapse:collapse;
-
-
-    border-radius:15px;
-
-
-    overflow:hidden;
-
+    border-radius:var(--radius);
 
     box-shadow:var(--sombra);
 
+}
+
+.resumo-fechamento h3{
+
+    color:var(--verde-escuro);
+
+    margin-bottom:15px;
 
 }
 
+.resumo-fechamento p{
 
-
-th {
-
-
-    background:var(--verde);
-
-    color:white;
-
-
-    padding:15px;
-
-
-}
-
-
-
-td {
-
-
-    padding:15px;
-
-    text-align:center;
-
-
-    border-bottom:1px solid #eee;
-
-
-}
-
-
-
-
-
-/* ==========================================
-   NOTEBOOKS GRANDES
-========================================== */
-
-
-@media(min-width:1400px){
-
-
-.sidebar {
-
-    width:300px;
-
-}
-
-
-
-.conteudo {
-
-
-    margin-left:300px;
-
-    width:calc(100% - 300px);
-
-
-}
-
-
-
-.cards {
-
-
-    grid-template-columns:
-
-    repeat(4,1fr);
-
-
-}
-
-
-
-}
-
-
-
-
-
-/* ==========================================
-   IPAD / TABLETS
-========================================== */
-
-
-@media(max-width:1100px){
-
-
-.sidebar {
-
-
-    width:90px;
-
-
-    padding:20px 12px;
-
-
-}
-
-
-
-.logo h2 {
-
-    display:none;
-
-}
-
-
-
-.logo span {
-
-    font-size:35px;
-
-}
-
-
-
-.sidebar button {
-
-
-    font-size:0;
-
-    text-align:center;
-
-
-}
-
-
-
-.sidebar button::first-letter {
-
-
-    font-size:22px;
-
-
-}
-
-
-
-.conteudo {
-
-
-    margin-left:90px;
-
-
-    width:calc(100% - 90px);
-
-
-}
-
-
-
-.cards {
-
-
-    grid-template-columns:
-
-    repeat(
-        auto-fit,
-        minmax(180px,1fr)
-    );
-
-
-}
-
-
-}
-
-
-
-
-
-/* ==========================================
-   CELULAR GRANDE
-========================================== */
-
-
-@media(max-width:768px){
-
-
-body {
-
-
-    display:block;
-
-
-}
-
-
-
-
-.sidebar {
-
-
-    width:100%;
-
-
-    height:auto;
-
-
-    position:relative;
-
-
-    flex-direction:row;
-
-
-    align-items:center;
-
+    display:flex;
 
     justify-content:space-between;
 
+    padding:8px 0;
+
+    font-size:17px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.resumo-fechamento span{
+
+    font-weight:bold;
+
+    color:var(--verde);
 
 }
 
 
+/*====================
+TABELAS
+====================*/
 
-.logo {
-
-
-    margin:0;
-
-
-}
-
-
-
-.sidebar nav {
-
-
-    flex-direction:row;
-
-
-    overflow-x:auto;
-
-
-}
-
-
-
-.sidebar button {
-
-
-    width:55px;
-
-    height:55px;
-
-    padding:10px;
-
-
-}
-
-
-
-.tema {
-
-
-    display:none;
-
-}
-
-
-
-.conteudo {
-
-
-    margin:0;
-
+table{
 
     width:100%;
 
+    border-collapse:collapse;
 
-    padding:20px;
+    margin-top:20px;
 
+    background:#fff;
 
-}
+    border-radius:var(--radius);
 
+    overflow:hidden;
 
-
-.cards {
-
-
-    grid-template-columns:1fr;
-
+    box-shadow:var(--sombra);
 
 }
 
+thead{
 
+    background:var(--verde);
+
+    color:#fff;
 
 }
 
-
-
-
-
-/* ==========================================
-   CELULARES PEQUENOS
-========================================== */
-
-
-@media(max-width:420px){
-
-
-
-.sidebar {
-
+th{
 
     padding:15px;
 
-
-}
-
-
-
-.logo span {
-
-
-    font-size:30px;
-
-
-}
-
-
-
-.conteudo {
-
-
-    padding:15px;
-
-
-}
-
-
-
-.card {
-
-
-    padding:20px;
-
-
-}
-
-
-
-.card p {
-
-
-    font-size:26px;
-
-
-}
-
-
-
-header h1 {
-
-
-    font-size:22px;
-
-
-}
-
-
-
-input,
-textarea,
-select {
-
+    text-align:center;
 
     font-size:15px;
 
+}
+
+td{
+
+    padding:15px;
+
+    text-align:center;
+
+    border-bottom:1px solid #ececec;
+
+}
+
+tbody tr{
+
+    transition:var(--transicao);
+
+}
+
+tbody tr:hover{
+
+    background:#f8fff2;
 
 }
 
 
-}
+/*====================
+BOTÕES DA TABELA
+====================*/
 
+td button{
 
+    width:auto;
 
+    padding:8px 14px;
 
+    margin:2px;
 
-
-/* ==========================================
-   DARK MODE
-========================================== */
-
-
-body.dark {
-
-
-    background:#111;
-
-    color:white;
+    font-size:14px;
 
 }
 
 
+/*====================
+RELATÓRIO
+====================*/
+
+#areaRelatorio{
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--sombra);
+
+    min-height:250px;
+
+    margin-bottom:20px;
+
+    line-height:1.8;
+
+}
+
+
+/*====================
+CONFIGURAÇÕES
+====================*/
+
+#configuracoes{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    max-width:400px;
+
+}
+
+
+/*====================
+PESQUISA
+====================*/
+
+input[type="search"]{
+
+    max-width:420px;
+
+    margin:20px 0;
+
+}
+
+
+/*====================
+ESPAÇAMENTO PADRÃO
+====================*/
+
+section>input{
+
+    margin-bottom:15px;
+
+}
+
+section>button{
+
+    margin-top:15px;
+
+}
+
+/*==================================================
+    DELÍCIAS DO MILHO
+    CSS - PARTE 3
+    Responsividade + Dark Mode
+==================================================*/
+
+
+/*====================
+NOTEBOOKS
+====================*/
+
+@media (max-width:1200px){
+
+    .sidebar{
+        width:220px;
+    }
+
+    .conteudo{
+        margin-left:220px;
+        width:calc(100% - 220px);
+        padding:30px;
+    }
+
+    .cards{
+        grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+    }
+
+}
+
+
+/*====================
+TABLETS
+====================*/
+
+@media (max-width:992px){
+
+    .sidebar{
+        width:90px;
+        padding:20px 10px;
+    }
+
+    .logo h2{
+        display:none;
+    }
+
+    .logo span{
+        font-size:38px;
+    }
+
+    .sidebar button{
+        font-size:0;
+        text-align:center;
+        padding:14px;
+    }
+
+    .sidebar button::first-letter{
+        font-size:22px;
+    }
+
+    .conteudo{
+        margin-left:90px;
+        width:calc(100% - 90px);
+        padding:25px;
+    }
+
+}
+
+
+/*====================
+CELULARES
+====================*/
+
+@media (max-width:768px){
+
+    body{
+        display:block;
+    }
+
+    .sidebar{
+
+        width:100%;
+        height:auto;
+
+        position:relative;
+
+        flex-direction:column;
+
+        padding:18px;
+
+    }
+
+    .logo{
+
+        margin-bottom:20px;
+
+    }
+
+    .logo h2{
+
+        display:block;
+
+        font-size:20px;
+
+    }
+
+    .sidebar nav{
+
+        display:grid;
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+        gap:10px;
+
+    }
+
+    .sidebar button{
+
+        font-size:15px;
+
+        padding:14px;
+
+        text-align:center;
+
+    }
+
+    .sidebar button::first-letter{
+
+        font-size:inherit;
+
+    }
+
+    .tema{
+
+        margin-top:18px;
+
+    }
+
+    .conteudo{
+
+        margin:0;
+
+        width:100%;
+
+        padding:20px;
+
+    }
+
+    .cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+    table{
+
+        display:block;
+
+        overflow-x:auto;
+
+        white-space:nowrap;
+
+    }
+
+    .formulario{
+
+        max-width:100%;
+
+    }
+
+}
+
+
+/*====================
+CELULARES PEQUENOS
+====================*/
+
+@media (max-width:480px){
+
+    .conteudo{
+
+        padding:15px;
+
+    }
+
+    header h1{
+
+        font-size:26px;
+
+    }
+
+    .card{
+
+        padding:20px;
+
+    }
+
+    .card p{
+
+        font-size:28px;
+
+    }
+
+    input,
+    textarea,
+    select,
+    button{
+
+        font-size:15px;
+
+    }
+
+    .sidebar nav{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/*====================
+TELAS MUITO GRANDES
+====================*/
+
+@media (min-width:1500px){
+
+    .cards{
+
+        grid-template-columns:
+        repeat(4,1fr);
+
+    }
+
+}
+
+
+/*====================
+ANIMAÇÕES
+====================*/
+
+.card,
+button,
+input,
+textarea,
+select{
+
+    transition:all .3s ease;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+
+/*====================
+SCROLLBAR
+====================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#ececec;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--verde);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--verde-escuro);
+
+}
+
+
+/*====================
+DARK MODE
+====================*/
+
+body.dark{
+
+    background:#121212;
+
+    color:#f0f0f0;
+
+}
+
+body.dark .sidebar{
+
+    background:linear-gradient(
+        180deg,
+        #1c5a24,
+        #123716
+    );
+
+}
 
 body.dark .card,
+body.dark .formulario,
 body.dark .grafico,
 body.dark .alertas,
+body.dark table,
 body.dark #areaRelatorio,
-body.dark .formulario,
-body.dark table {
+body.dark .resumo-fechamento{
 
+    background:#1f1f1f;
 
-    background:#1e1e1e;
-
-    color:white;
-
+    color:#f0f0f0;
 
 }
 
+body.dark input,
+body.dark textarea,
+body.dark select{
 
-body.dark td {
+    background:#2b2b2b;
+
+    color:#fff;
+
+    border-color:#444;
+
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+
+    color:#bbb;
+
+}
+
+body.dark td{
 
     border-color:#333;
 
 }
+
+body.dark tbody tr:hover{
+
+    background:#2a2a2a;
+
+}
+
+body.dark header h1,
+body.dark h2,
+body.dark h3{
+
+    color:#f6c343;
+
+}
+
+body.dark .card p,
+body.dark .resumo-fechamento span{
+
+    color:#7ed957;
+
+}
+
+body.dark button{
+
+    background:var(--verde);
+
+}
+
+body.dark button:hover{
+
+    background:#2f7c31;
+
+}
+
+body.dark ::-webkit-scrollbar-track{
+
+    background:#222;
+
+}
+
+body.dark ::-webkit-scrollbar-thumb{
+
+    background:#4caf50;
+
+       }
