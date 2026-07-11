@@ -1,393 +1,744 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Delícias do Milho</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-    <!-- Menu lateral -->
-    <aside class="sidebar">
 
-        <div class="logo">
-            🌽
-            <h2>Delícias do Milho</h2>
-        </div>
+<!-- MENU LATERAL -->
 
-        <nav>
-
-            <button onclick="mostrarPagina('dashboard')">
-                🏠 Dashboard
-            </button>
-
-            <button onclick="mostrarPagina('produtos')">
-                📦 Produtos
-            </button>
-
-            <button onclick="mostrarPagina('fechamento')">
-                📝 Fechamento do Dia
-            </button>
-
-            <button onclick="mostrarPagina('historico')">
-                📊 Histórico
-            </button>
-
-            <button onclick="mostrarPagina('relatorio')">
-                📄 Relatório
-            </button>
-
-            <button onclick="mostrarPagina('configuracoes')">
-                ⚙️ Configurações
-            </button>
-
-        </nav>
+<aside class="sidebar">
 
 
-        <button class="tema" onclick="alternarTema()">
-            🌙 Tema
+    <div class="logo">
+
+        <span>🌽</span>
+
+        <h2>
+            Delícias do Milho
+        </h2>
+
+    </div>
+
+
+
+    <nav>
+
+
+        <button onclick="mostrarPagina('dashboard')">
+            🏠 Dashboard
         </button>
 
-    </aside>
 
+        <button onclick="mostrarPagina('produtos')">
+            📦 Produtos
+        </button>
 
-    <!-- Conteúdo principal -->
-    <main class="conteudo">
 
+        <button onclick="mostrarPagina('fechamento')">
+            📝 Fechamento
+        </button>
 
-        <!-- DASHBOARD -->
-        <section id="dashboard" class="pagina ativa">
 
-            <header>
-                <h1>Dashboard</h1>
-                <p id="dataAtual"></p>
-            </header>
+        <button onclick="mostrarPagina('historico')">
+            📊 Histórico
+        </button>
 
 
-            <div class="cards">
+        <button onclick="mostrarPagina('relatorio')">
+            📄 Relatório
+        </button>
 
 
-                <div class="card">
-                    <h3>💰 Venda do Dia</h3>
-                    <p id="vendaTotal">
-                        R$ 0,00
-                    </p>
-                </div>
+        <button onclick="mostrarPagina('configuracoes')">
+            ⚙ Configurações
+        </button>
 
 
-                <div class="card">
-                    <h3>📈 Lucro Líquido</h3>
-                    <p id="lucroTotal">
-                        R$ 0,00
-                    </p>
-                </div>
+    </nav>
 
 
-                <div class="card">
-                    <h3>📦 Produtos Vendidos</h3>
-                    <p id="produtosVendidos">
-                        0
-                    </p>
-                </div>
 
+    <button 
+    class="tema"
+    onclick="alternarTema()">
 
-                <div class="card">
-                    <h3>🧾 Último Fechamento</h3>
-                    <p id="ultimoFechamento">
-                        Nenhum
-                    </p>
-                </div>
+        🌙 Tema
 
+    </button>
 
-            </div>
 
 
-            <div class="grafico">
+</aside>
 
-                <h2>📊 Evolução das Vendas</h2>
 
-                <div id="graficoVendas">
-                    Nenhum dado disponível
-                </div>
 
-            </div>
 
 
-            <div class="alertas">
+<!-- CONTEÚDO -->
 
-                <h2>⚠ Alertas</h2>
+<main class="conteudo">
 
-                <p id="alertasEstoque">
-                    Nenhum alerta
-                </p>
 
-            </div>
 
 
-        </section>
 
+<!-- ================= DASHBOARD ================= -->
 
 
+<section 
+id="dashboard"
+class="pagina ativa">
 
-        <!-- PRODUTOS -->
-        <section id="produtos" class="pagina">
 
+<header>
 
-            <h1>📦 Produtos</h1>
+<h1>
+Dashboard
+</h1>
 
 
-            <div class="formulario">
+<p id="dataAtual">
 
+</p>
 
-                <input 
-                type="text" 
-                id="nomeProduto"
-                placeholder="Nome do produto">
 
+</header>
 
-                <input 
-                type="number" 
-                id="precoVenda"
-                placeholder="Preço de venda">
 
 
-                <input 
-                type="number" 
-                id="precoCusto"
-                placeholder="Preço de custo">
+<div class="cards">
 
 
-                <input 
-                type="number" 
-                id="estoque"
-                placeholder="Quantidade inicial">
 
+<div class="card">
 
-                <button onclick="adicionarProduto()">
-                    Salvar Produto
-                </button>
+<h3>
+💰 Venda do Dia
+</h3>
 
 
-            </div>
+<p id="vendaTotal">
+R$ 0,00
+</p>
 
 
-            <div>
+</div>
 
-                <h2>Produtos cadastrados</h2>
 
-                <table>
 
-                    <thead>
 
-                        <tr>
-                            <th>Produto</th>
-                            <th>Venda</th>
-                            <th>Custo</th>
-                            <th>Estoque</th>
-                        </tr>
 
-                    </thead>
+<div class="card">
 
+<h3>
+📈 Lucro Líquido
+</h3>
 
-                    <tbody id="listaProdutos">
 
-                    </tbody>
+<p id="lucroTotal">
+R$ 0,00
+</p>
 
 
-                </table>
+</div>
 
-            </div>
 
 
-        </section>
 
 
+<div class="card">
 
+<h3>
+📦 Produtos Vendidos
+</h3>
 
 
+<p id="produtosVendidos">
+0
+</p>
 
-        <!-- FECHAMENTO -->
-        <section id="fechamento" class="pagina">
 
+</div>
 
-            <h1>📝 Fechamento do Dia</h1>
 
 
-            <input type="date" id="dataFechamento">
 
 
-            <input 
-            type="text"
-            id="local"
-            placeholder="Local">
+<div class="card">
 
+<h3>
+🧾 Último Fechamento
+</h3>
 
-            <h2>Produtos</h2>
 
+<p id="ultimoFechamento">
+Nenhum
+</p>
 
-            <div id="produtosFechamento">
 
-            </div>
+</div>
 
 
 
-            <h2>Despesas Extras</h2>
 
+</div>
 
-            <input 
-            type="number"
-            id="despesasExtras"
-            placeholder="Despesas extras">
 
 
-            <input 
-            type="number"
-            id="taxas"
-            placeholder="Taxas">
 
 
-            <input 
-            type="number"
-            id="impostos"
-            placeholder="Impostos">
+<div class="grafico">
 
 
-            <textarea 
-            id="observacao"
-            placeholder="Observações">
-            </textarea>
+<h2>
+📊 Evolução das Vendas
+</h2>
 
 
+<div id="graficoVendas">
 
-            <button onclick="gerarRelatorio()">
+Nenhum dado disponível
 
-                Gerar Relatório
+</div>
 
-            </button>
 
 
-        </section>
+</div>
 
 
 
 
 
+<div class="alertas">
 
-        <!-- HISTÓRICO -->
-        <section id="historico" class="pagina">
 
+<h2>
+⚠ Alertas
+</h2>
 
-            <h1>📊 Histórico</h1>
 
+<p id="alertasEstoque">
 
-            <input 
-            type="search"
-            placeholder="Pesquisar relatório">
+Nenhum alerta
 
+</p>
 
-            <table>
 
+</div>
 
-                <thead>
 
-                    <tr>
 
-                        <th>Data</th>
-                        <th>Local</th>
-                        <th>Venda</th>
-                        <th>Lucro</th>
 
-                    </tr>
+</section>
 
-                </thead>
 
 
-                <tbody id="historicoTabela">
 
 
-                </tbody>
 
 
-            </table>
+<!-- ================= PRODUTOS ================= -->
 
 
-        </section>
+<section 
+id="produtos"
+class="pagina">
 
 
+<h1>
+📦 Produtos
+</h1>
 
 
 
 
+<div class="formulario">
 
-        <!-- RELATÓRIO -->
-        <section id="relatorio" class="pagina">
 
+<input
+id="nomeProduto"
+type="text"
+placeholder="Nome do produto">
 
-            <h1>📄 Relatório</h1>
 
 
-            <div id="areaRelatorio">
+<input
+id="precoVenda"
+type="number"
+placeholder="Preço de venda">
 
-                Nenhum relatório gerado.
 
-            </div>
 
+<input
+id="precoCusto"
+type="number"
+placeholder="Preço de custo">
 
-            <button>
-                📄 Exportar PDF
-            </button>
 
 
-            <button>
-                🖨 Imprimir
-            </button>
+<input
+id="estoque"
+type="number"
+placeholder="Quantidade inicial">
 
 
-        </section>
 
+<button onclick="adicionarProduto()">
 
+Salvar Produto
 
+</button>
 
 
 
+</div>
 
-        <!-- CONFIGURAÇÕES -->
-        <section id="configuracoes" class="pagina">
 
 
-            <h1>⚙️ Configurações</h1>
 
 
-            <button onclick="exportarBackup()">
-                💾 Exportar Backup
-            </button>
 
+<h2>
+Produtos cadastrados
+</h2>
 
-            <button onclick="restaurarBackup()">
-                🔄 Restaurar Backup
-            </button>
 
 
+<table>
 
-            <button onclick="limparDados()">
-                🗑 Limpar Dados
-            </button>
 
+<thead>
 
+<tr>
 
-        </section>
+<th>
+Produto
+</th>
 
 
+<th>
+Venda
+</th>
 
-    </main>
+
+<th>
+Custo
+</th>
+
+
+<th>
+Estoque
+</th>
+
+
+<th>
+Ações
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="listaProdutos">
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ================= FECHAMENTO ================= -->
+
+
+<section 
+id="fechamento"
+class="pagina"
+onclick="carregarProdutosFechamento()">
+
+
+
+<h1>
+📝 Fechamento do Dia
+</h1>
+
+
+
+<input
+id="dataFechamento"
+type="date">
+
+
+
+<input
+id="local"
+type="text"
+placeholder="Local">
+
+
+
+
+
+
+<h2>
+Produtos
+</h2>
+
+
+
+<div id="produtosFechamento">
+
+
+</div>
+
+
+
+
+
+
+<h2>
+Despesas Extras
+</h2>
+
+
+
+<input
+id="despesasExtras"
+type="number"
+placeholder="Despesas extras">
+
+
+
+<input
+id="taxas"
+type="number"
+placeholder="Taxas">
+
+
+
+<input
+id="impostos"
+type="number"
+placeholder="Impostos">
+
+
+
+
+
+<textarea
+id="observacao"
+placeholder="Observações">
+
+</textarea>
+
+
+
+
+
+<div class="resumo-fechamento">
+
+
+<h3>
+Resumo automático
+</h3>
+
+
+
+<p>
+
+Receita:
+
+<span id="receitaFechamento">
+
+R$ 0,00
+
+</span>
+
+
+</p>
+
+
+
+<p>
+
+Custos:
+
+<span id="custoFechamento">
+
+R$ 0,00
+
+</span>
+
+
+</p>
+
+
+
+<p>
+
+Lucro:
+
+<span id="lucroFechamento">
+
+R$ 0,00
+
+</span>
+
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<button onclick="gerarRelatorio()">
+
+📄 Gerar Relatório
+
+</button>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= HISTÓRICO ================= -->
+
+
+<section 
+id="historico"
+class="pagina">
+
+
+<h1>
+📊 Histórico
+</h1>
+
+
+
+
+<input
+type="search"
+placeholder="Pesquisar relatório"
+oninput="pesquisarHistorico(this.value)">
+
+
+
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+<th>
+Data
+</th>
+
+
+<th>
+Local
+</th>
+
+
+<th>
+Venda
+</th>
+
+
+<th>
+Lucro
+</th>
+
+
+<th>
+Abrir
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+<tbody id="historicoTabela">
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= RELATÓRIO ================= -->
+
+
+<section
+id="relatorio"
+class="pagina">
+
+
+<h1>
+📄 Relatório
+</h1>
+
+
+
+
+<div id="areaRelatorio">
+
+Nenhum relatório gerado.
+
+</div>
+
+
+
+
+
+<button onclick="exportarPDF()">
+
+📄 Exportar PDF
+
+</button>
+
+
+
+
+<button onclick="imprimirRelatorio()">
+
+🖨 Imprimir
+
+</button>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= CONFIGURAÇÕES ================= -->
+
+
+<section
+id="configuracoes"
+class="pagina">
+
+
+<h1>
+⚙ Configurações
+</h1>
+
+
+
+
+<button onclick="exportarBackup()">
+
+💾 Exportar Backup
+
+</button>
+
+
+
+<button onclick="restaurarBackup()">
+
+🔄 Restaurar Backup
+
+</button>
+
+
+
+<button onclick="limparDados()">
+
+🗑 Limpar Dados
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+</main>
+
+
+
 
 
 
 <script src="script.js"></script>
 
+
 </body>
+
 </html>
