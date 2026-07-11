@@ -8,297 +8,318 @@
     box-sizing:border-box;
 }
 
-html{
-    scroll-behavior:smooth;
-}
 
 body{
+
     font-family:'Poppins',sans-serif;
-    background:#F7F4EA;
+
+    background:#F8F5E8;
+
     color:#333;
-    display:flex;
+
     min-height:100vh;
+
 }
+
+
+
+/* ===========================
+   BOTÃO MOBILE
+=========================== */
+
+
+.mobile-btn{
+
+    display:none;
+
+    position:fixed;
+
+    top:15px;
+
+    left:15px;
+
+    z-index:1000;
+
+    border:none;
+
+    background:#F4C542;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+
 
 /* ===========================
    SIDEBAR
 =========================== */
 
+
 .sidebar{
+
     width:260px;
-    background:#2E7D32;
-    color:#FFF;
-    display:flex;
-    flex-direction:column;
-    padding:25px;
+
+    height:100vh;
+
+    background:
+
+    linear-gradient(
+        180deg,
+        #2E7D32,
+        #1B5E20
+    );
+
+
+    color:white;
+
     position:fixed;
+
     left:0;
+
     top:0;
-    bottom:0;
+
+    padding:25px;
+
 }
+
+
 
 .logo{
+
     text-align:center;
+
     margin-bottom:40px;
+
 }
+
+
 
 .logo-icon{
+
     font-size:60px;
+
 }
+
+
 
 .logo h2{
+
+    font-size:23px;
+
     margin-top:10px;
-    font-size:24px;
-    font-weight:600;
+
 }
+
+
+
 
 .sidebar nav{
+
     display:flex;
+
     flex-direction:column;
+
     gap:12px;
+
 }
+
+
+
 
 .menu-item{
+
     border:none;
+
     background:transparent;
-    color:#FFF;
-    text-align:left;
+
+    color:white;
+
     padding:15px;
-    border-radius:12px;
+
+    border-radius:15px;
+
     cursor:pointer;
-    transition:.3s;
+
     font-size:15px;
+
+    text-align:left;
+
+    transition:.3s;
+
 }
+
+
 
 .menu-item:hover{
+
     background:rgba(255,255,255,.15);
+
 }
 
+
+
 .menu-item.active{
+
     background:#F4C542;
+
     color:#333;
+
     font-weight:600;
+
 }
+
+
 
 /* ===========================
    CONTEÚDO
 =========================== */
 
+
 .content{
+
     margin-left:260px;
-    width:100%;
+
     padding:35px;
+
 }
+
+
 
 /* ===========================
    HEADER
 =========================== */
 
+
 .topbar{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-bottom:35px;
+
 }
+
+
 
 .topbar h1{
+
     font-size:34px;
+
 }
+
+
 
 .topbar p{
+
     color:#777;
-    margin-top:5px;
+
 }
 
+
+
 .date{
-    background:#FFF;
-    padding:12px 20px;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    background:white;
+
+    padding:14px 20px;
+
+    border-radius:15px;
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,.08);
+
 }
+
+
 
 /* ===========================
    CARDS
 =========================== */
 
+
 .cards{
+
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(220px,1fr));
+
     gap:20px;
+
 }
+
+
 
 .card{
-    background:#FFF;
-    border-radius:18px;
-    padding:25px;
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
 
-.card h3{
-    color:#777;
-    font-size:15px;
-}
-
-.card h2{
-    margin-top:10px;
-    color:#2E7D32;
-    font-size:30px;
-}
-
-/* ===========================
-   BOTÕES
-=========================== */
-
-.btn{
-    background:#F4C542;
-    color:#333;
-    border:none;
-    padding:14px 22px;
-    border-radius:12px;
-    cursor:pointer;
-    font-weight:600;
-    transition:.3s;
-}
-
-.btn:hover{
-    transform:translateY(-2px);
-}
-
-/* ===========================
-   INPUTS
-=========================== */
-
-input,
-textarea,
-select{
-    width:100%;
-    padding:14px;
-    border:1px solid #DDD;
-    border-radius:12px;
-    outline:none;
-    font-size:15px;
-    margin-bottom:15px;
-    background:#FFF;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-    border-color:#2E7D32;
-}
-
-/* ===========================
-   TABELAS
-=========================== */
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:#FFF;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-
-thead{
-    background:#F4C542;
-}
-
-th,
-td{
-    padding:16px;
-    text-align:left;
-}
-
-tbody tr{
-    border-bottom:1px solid #EEE;
-}
-
-tbody tr:hover{
-    background:#F9F9F9;
-}
-
-/* ===========================
-   RESPONSIVO
-=========================== */
-
-@media(max-width:900px){
-
-.sidebar{
-    width:80px;
-    padding:20px 10px;
-}
-
-.logo h2{
-    display:none;
-}
-
-.menu-item{
-    text-align:center;
-    font-size:0;
-}
-
-.menu-item::first-letter{
-    font-size:20px;
-}
-
-.content{
-    margin-left:80px;
-}
-
-}
-
-@media(max-width:700px){
-
-body{
-    flex-direction:column;
-}
-
-.sidebar{
-    position:relative;
-    width:100%;
-    height:auto;
-}
-
-.sidebar nav{
-    flex-direction:row;
-    overflow:auto;
-}
-
-.content{
-    margin-left:0;
-    padding:20px;
-}
-
-.topbar{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:15px;
-}
-
-.cards{
-    grid-template-columns:1fr;
-}
-
-}
-
-/* ===========================
-   PRODUTOS
-=========================== */
-
-.form-card{
-
-    background:#FFF;
+    background:white;
 
     padding:25px;
 
     border-radius:20px;
 
-    margin-bottom:25px;
+    box-shadow:
 
-    box-shadow:0 10px 20px rgba(0,0,0,.08);
+    0 10px 25px rgba(0,0,0,.08);
 
 }
+
+
+
+.card h3{
+
+    color:#777;
+
+    font-size:15px;
+
+}
+
+
+
+.card h2{
+
+    margin-top:10px;
+
+    color:#2E7D32;
+
+    font-size:30px;
+
+}
+
+
+
+/* ===========================
+   FORMULÁRIOS
+=========================== */
+
+
+.form-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    box-shadow:
+
+    0 10px 25px rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+}
+
+
 
 .form-grid{
 
@@ -306,11 +327,103 @@ body{
 
     gap:15px;
 
-    margin-top:20px;
+    margin:20px 0;
 
 }
 
-.lista-produtos{
+
+
+input,
+textarea,
+select{
+
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    font-size:15px;
+
+}
+
+
+
+textarea{
+
+    resize:none;
+
+    height:100px;
+
+}
+
+
+
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:#2E7D32;
+
+}
+
+
+
+/* ===========================
+   BOTÕES
+=========================== */
+
+
+.btn{
+
+    background:#F4C542;
+
+    border:none;
+
+    padding:14px 25px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+
+.btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+
+.excluir{
+
+    background:#D9534F;
+
+    color:white;
+
+}
+
+
+
+/* ===========================
+   PRODUTOS
+=========================== */
+
+
+#listaProdutos{
 
     display:grid;
 
@@ -318,11 +431,16 @@ body{
 
 }
 
+
+
 .produto-card{
+
 
     display:grid;
 
-    grid-template-columns:2fr 1fr 1fr auto;
+    grid-template-columns:
+
+    2fr 1fr auto;
 
     align-items:center;
 
@@ -330,20 +448,126 @@ body{
 
 }
 
-.excluir{
 
-    background:#d9534f;
 
-    color:white;
+/* ===========================
+   VENDAS
+=========================== */
+
+
+#listaVendas{
+
+    display:grid;
+
+    gap:20px;
+
+    margin-top:25px;
 
 }
 
-@media(max-width:800px){
 
-.produto-card{
 
-    grid-template-columns:1fr;
+/* ===========================
+   RESPONSIVO TABLET
+=========================== */
+
+
+@media(max-width:900px){
+
+
+    .sidebar{
+
+        transform:translateX(-100%);
+
+        transition:.3s;
+
+        z-index:999;
+
+    }
+
+
+
+    .sidebar.open{
+
+        transform:translateX(0);
+
+    }
+
+
+
+    .mobile-btn{
+
+        display:block;
+
+    }
+
+
+
+    .content{
+
+        margin-left:0;
+
+        padding:25px;
+
+    }
+
 
 }
+
+
+
+
+/* ===========================
+   RESPONSIVO CELULAR
+=========================== */
+
+
+@media(max-width:600px){
+
+
+    .topbar{
+
+        margin-top:50px;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:15px;
+
+    }
+
+
+
+    .topbar h1{
+
+        font-size:27px;
+
+    }
+
+
+
+    .cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+    .produto-card{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+    .form-card{
+
+        padding:20px;
+
+    }
+
 
 }
