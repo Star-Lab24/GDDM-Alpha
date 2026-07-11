@@ -1,6 +1,7 @@
 /* ==========================================
    DELÍCIAS DO MILHO
-   SISTEMA ADMINISTRATIVO PREMIUM
+   RESPONSIVE SYSTEM UI
+   Desktop | Notebook | iPad | Mobile
 ========================================== */
 
 
@@ -14,48 +15,16 @@
 }
 
 
-:root {
-
-    --amarelo:#f5b700;
-    --amarelo-claro:#ffd65a;
-
-    --verde:#3d8b40;
-    --verde-escuro:#245d29;
-
-    --marrom:#8b5e34;
-
-    --fundo:#f4f6ef;
-
-    --branco:#ffffff;
-
-    --texto:#333;
-
-    --borda:#e8e8e8;
-
-    --sombra:
-    0 10px 30px rgba(0,0,0,.08);
-
-    --transicao:.3s ease;
-
+html {
+    scroll-behavior:smooth;
 }
-
-
-
-/* ==========================================
-   BODY
-========================================== */
 
 
 body {
 
-    background:
-    linear-gradient(
-        135deg,
-        #f8f7f0,
-        #eef5e9
-    );
+    background:#f5f6ef;
 
-    color:var(--texto);
+    color:#333;
 
     min-height:100vh;
 
@@ -66,7 +35,38 @@ body {
 
 
 /* ==========================================
-   SIDEBAR
+   VARIÁVEIS
+========================================== */
+
+
+:root {
+
+    --verde:#3d8b40;
+    --verde-dark:#28652d;
+
+    --amarelo:#f5b700;
+
+    --branco:#fff;
+
+    --fundo:#f5f6ef;
+
+    --texto:#333;
+
+    --sombra:
+    0 8px 25px rgba(0,0,0,.10);
+
+    --radius:18px;
+
+    --transition:.3s ease;
+
+}
+
+
+
+
+
+/* ==========================================
+   SIDEBAR DESKTOP
 ========================================== */
 
 
@@ -79,64 +79,46 @@ body {
     position:fixed;
 
     left:0;
-    top:0;
 
-    padding:30px 20px;
+    top:0;
 
     background:
 
     linear-gradient(
         180deg,
         var(--verde),
-        var(--verde-escuro)
+        var(--verde-dark)
     );
 
+
     color:white;
+
+    padding:25px 20px;
 
     display:flex;
 
     flex-direction:column;
 
-    box-shadow:
+    z-index:1000;
 
-    8px 0 30px rgba(0,0,0,.15);
-
-    z-index:10;
 
 }
 
-
-
-/* LOGO */
 
 
 .logo {
 
     text-align:center;
 
-    margin-bottom:45px;
+    margin-bottom:40px;
 
 }
+
 
 
 .logo span {
 
-    font-size:55px;
-
-    display:block;
-
-    animation:
-
-    flutuar 3s infinite;
-
-}
-
-
-@keyframes flutuar {
-
-    50%{
-        transform:translateY(-8px);
-    }
+    font-size:45px;
 
 }
 
@@ -144,17 +126,14 @@ body {
 
 .logo h2 {
 
+    font-size:20px;
+
     margin-top:10px;
-
-    font-size:22px;
-
-    letter-spacing:1px;
 
 }
 
 
 
-/* MENU */
 
 
 .sidebar nav {
@@ -163,35 +142,38 @@ body {
 
     flex-direction:column;
 
-    gap:15px;
+    gap:12px;
 
 }
 
 
 
+
 .sidebar button {
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
 
     background:
 
     rgba(255,255,255,.15);
 
-    backdrop-filter:blur(10px);
 
     color:white;
 
-    border:none;
-
-    padding:15px;
-
-    border-radius:14px;
-
-    font-size:15px;
+    cursor:pointer;
 
     text-align:left;
 
-    cursor:pointer;
 
-    transition:var(--transicao);
+    transition:var(--transition);
+
 
 }
 
@@ -203,15 +185,10 @@ body {
 
     color:var(--verde);
 
-    transform:
-
-    translateX(8px);
-
 }
 
 
 
-/* BOTÃO TEMA */
 
 
 .tema {
@@ -225,7 +202,7 @@ body {
 
 
 /* ==========================================
-   CONTEÚDO
+   ÁREA PRINCIPAL
 ========================================== */
 
 
@@ -233,11 +210,15 @@ body {
 
     margin-left:270px;
 
-    padding:35px;
+    padding:30px;
 
-    width:100%;
+    width:calc(100% - 270px);
+
+    min-height:100vh;
 
 }
+
+
 
 
 
@@ -245,12 +226,7 @@ body {
 
     display:none;
 
-    animation:
-
-    aparecer .4s;
-
 }
-
 
 
 .pagina.ativa {
@@ -261,52 +237,20 @@ body {
 
 
 
-@keyframes aparecer {
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(15px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-
 
 
 header {
 
-    margin-bottom:35px;
+    margin-bottom:30px;
 
 }
-
 
 
 header h1 {
 
-    font-size:34px;
+    font-size:clamp(22px,3vw,36px);
 
-    color:var(--verde-escuro);
-
-}
-
-
-
-header p {
-
-    margin-top:8px;
-
-    color:#777;
+    color:var(--verde-dark);
 
 }
 
@@ -321,34 +265,35 @@ header p {
 
 .cards {
 
+
     display:grid;
+
 
     grid-template-columns:
 
-    repeat(auto-fit,minmax(240px,1fr));
+    repeat(
+        auto-fit,
+        minmax(220px,1fr)
+    );
 
-    gap:25px;
+
+    gap:20px;
+
 
 }
+
+
 
 
 
 .card {
 
 
-    background:
-
-    rgba(255,255,255,.8);
-
-    backdrop-filter:
-
-    blur(10px);
-
+    background:white;
 
     padding:25px;
 
-
-    border-radius:22px;
+    border-radius:var(--radius);
 
 
     box-shadow:var(--sombra);
@@ -356,10 +301,10 @@ header p {
 
     border-left:
 
-    7px solid var(--amarelo);
+    6px solid var(--amarelo);
 
 
-    transition:var(--transicao);
+    transition:var(--transition);
 
 
 }
@@ -368,9 +313,7 @@ header p {
 
 .card:hover {
 
-    transform:
-
-    translateY(-8px);
+    transform:translateY(-5px);
 
 }
 
@@ -378,7 +321,7 @@ header p {
 
 .card h3 {
 
-    font-size:18px;
+    font-size:17px;
 
     margin-bottom:15px;
 
@@ -388,7 +331,7 @@ header p {
 
 .card p {
 
-    font-size:32px;
+    font-size:30px;
 
     font-weight:bold;
 
@@ -412,30 +355,20 @@ header p {
 
     background:white;
 
+    padding:25px;
 
-    padding:30px;
+
+    margin-top:25px;
 
 
-    border-radius:22px;
+    border-radius:var(--radius);
 
 
     box-shadow:var(--sombra);
 
 
-    margin-top:30px;
+    width:100%;
 
-
-}
-
-
-
-
-.grafico h2,
-.alertas h2 {
-
-    margin-bottom:20px;
-
-    color:var(--verde-escuro);
 
 }
 
@@ -450,16 +383,19 @@ header p {
 
 .formulario {
 
+
+    width:100%;
+
+    max-width:600px;
+
+
     background:white;
 
 
-    padding:30px;
+    padding:25px;
 
 
-    max-width:550px;
-
-
-    border-radius:22px;
+    border-radius:var(--radius);
 
 
     box-shadow:var(--sombra);
@@ -467,9 +403,12 @@ header p {
 
     display:flex;
 
+
     flex-direction:column;
 
-    gap:18px;
+
+    gap:15px;
+
 
 }
 
@@ -484,7 +423,7 @@ select {
     width:100%;
 
 
-    padding:15px;
+    padding:14px;
 
 
     border-radius:12px;
@@ -492,40 +431,13 @@ select {
 
     border:
 
-    1px solid var(--borda);
+    1px solid #ddd;
 
 
-    font-size:15px;
-
-
-    outline:none;
-
-
-    transition:.3s;
+    font-size:16px;
 
 
 }
-
-
-
-input:focus,
-textarea:focus,
-select:focus {
-
-
-    border-color:
-
-    var(--verde);
-
-
-    box-shadow:
-
-    0 0 0 3px rgba(61,139,64,.15);
-
-
-}
-
-
 
 
 
@@ -538,63 +450,33 @@ textarea {
 
 
 
-button {
-
-
-    cursor:pointer;
-
-}
-
-
-
-
 
 .formulario button,
 section button {
 
 
-    background:
-
-    linear-gradient(
-
-    135deg,
-
-    var(--verde),
-
-    var(--verde-escuro)
-
-    );
+    width:100%;
 
 
-    color:white;
+    padding:15px;
 
 
     border:none;
 
 
-    padding:15px 22px;
-
-
     border-radius:12px;
 
 
-    font-weight:bold;
+    background:var(--verde);
 
 
-    transition:.3s;
+    color:white;
 
 
-}
+    font-size:16px;
 
 
-
-.formulario button:hover,
-section button:hover {
-
-
-    transform:
-
-    scale(1.03);
+    cursor:pointer;
 
 
 }
@@ -604,26 +486,39 @@ section button:hover {
 
 
 /* ==========================================
-   TABELAS
+   TABELAS RESPONSIVAS
 ========================================== */
 
 
-table {
+.table-container {
 
 
     width:100%;
 
 
-    border-collapse:collapse;
+    overflow-x:auto;
 
 
-    margin-top:25px;
+}
+
+
+
+table {
+
+
+    min-width:700px;
+
+
+    width:100%;
 
 
     background:white;
 
 
-    border-radius:20px;
+    border-collapse:collapse;
+
+
+    border-radius:15px;
 
 
     overflow:hidden;
@@ -639,15 +534,12 @@ table {
 th {
 
 
-    background:
-
-    var(--verde);
-
+    background:var(--verde);
 
     color:white;
 
 
-    padding:18px;
+    padding:15px;
 
 
 }
@@ -657,25 +549,12 @@ th {
 td {
 
 
-    padding:16px;
-
+    padding:15px;
 
     text-align:center;
 
 
-    border-bottom:
-
-    1px solid #eee;
-
-
-}
-
-
-
-tr:hover {
-
-
-    background:#fafafa;
+    border-bottom:1px solid #eee;
 
 
 }
@@ -685,51 +564,44 @@ tr:hover {
 
 
 /* ==========================================
-   DARK MODE
+   NOTEBOOKS GRANDES
 ========================================== */
 
 
-body.dark {
+@media(min-width:1400px){
 
 
-    --fundo:#101410;
+.sidebar {
 
-    --texto:white;
+    width:300px;
+
+}
+
+
+
+.conteudo {
+
+
+    margin-left:300px;
+
+    width:calc(100% - 300px);
 
 
 }
 
 
 
-body.dark .card,
-body.dark .grafico,
-body.dark .alertas,
-body.dark .formulario,
-body.dark table,
-body.dark #areaRelatorio {
+.cards {
 
 
-    background:#1c211c;
+    grid-template-columns:
 
-    color:white;
+    repeat(4,1fr);
 
 
 }
 
 
-
-body.dark header h1 {
-
-    color:var(--amarelo);
-
-}
-
-
-
-
-body.dark td {
-
-    border-color:#333;
 
 }
 
@@ -738,22 +610,24 @@ body.dark td {
 
 
 /* ==========================================
-   RESPONSIVO
+   IPAD / TABLETS
 ========================================== */
 
 
-@media(max-width:900px){
+@media(max-width:1100px){
 
 
 .sidebar {
 
 
-    width:85px;
+    width:90px;
 
-    padding:20px 10px;
+
+    padding:20px 12px;
 
 
 }
+
 
 
 .logo h2 {
@@ -766,7 +640,7 @@ body.dark td {
 
 .logo span {
 
-    font-size:40px;
+    font-size:35px;
 
 }
 
@@ -787,7 +661,7 @@ body.dark td {
 .sidebar button::first-letter {
 
 
-    font-size:24px;
+    font-size:22px;
 
 
 }
@@ -797,7 +671,134 @@ body.dark td {
 .conteudo {
 
 
-    margin-left:85px;
+    margin-left:90px;
+
+
+    width:calc(100% - 90px);
+
+
+}
+
+
+
+.cards {
+
+
+    grid-template-columns:
+
+    repeat(
+        auto-fit,
+        minmax(180px,1fr)
+    );
+
+
+}
+
+
+}
+
+
+
+
+
+/* ==========================================
+   CELULAR GRANDE
+========================================== */
+
+
+@media(max-width:768px){
+
+
+body {
+
+
+    display:block;
+
+
+}
+
+
+
+
+.sidebar {
+
+
+    width:100%;
+
+
+    height:auto;
+
+
+    position:relative;
+
+
+    flex-direction:row;
+
+
+    align-items:center;
+
+
+    justify-content:space-between;
+
+
+}
+
+
+
+.logo {
+
+
+    margin:0;
+
+
+}
+
+
+
+.sidebar nav {
+
+
+    flex-direction:row;
+
+
+    overflow-x:auto;
+
+
+}
+
+
+
+.sidebar button {
+
+
+    width:55px;
+
+    height:55px;
+
+    padding:10px;
+
+
+}
+
+
+
+.tema {
+
+
+    display:none;
+
+}
+
+
+
+.conteudo {
+
+
+    margin:0;
+
+
+    width:100%;
+
 
     padding:20px;
 
@@ -806,17 +807,76 @@ body.dark td {
 
 
 
+.cards {
+
+
+    grid-template-columns:1fr;
+
+
+}
+
+
+
 }
 
 
 
 
-@media(max-width:600px){
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+
+@media(max-width:420px){
+
+
+
+.sidebar {
+
+
+    padding:15px;
+
+
+}
+
+
+
+.logo span {
+
+
+    font-size:30px;
+
+
+}
+
 
 
 .conteudo {
 
+
     padding:15px;
+
+
+}
+
+
+
+.card {
+
+
+    padding:20px;
+
+
+}
+
+
+
+.card p {
+
+
+    font-size:26px;
+
 
 }
 
@@ -824,27 +884,66 @@ body.dark td {
 
 header h1 {
 
-    font-size:25px;
+
+    font-size:22px;
+
 
 }
 
 
 
-.cards {
+input,
+textarea,
+select {
 
-    grid-template-columns:1fr;
+
+    font-size:15px;
+
+
+}
+
 
 }
 
 
 
-table {
 
 
-    font-size:12px;
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+
+body.dark {
+
+
+    background:#111;
+
+    color:white;
 
 }
 
 
+
+body.dark .card,
+body.dark .grafico,
+body.dark .alertas,
+body.dark #areaRelatorio,
+body.dark .formulario,
+body.dark table {
+
+
+    background:#1e1e1e;
+
+    color:white;
+
+
+}
+
+
+body.dark td {
+
+    border-color:#333;
 
 }
