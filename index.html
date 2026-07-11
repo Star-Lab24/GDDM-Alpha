@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delícias do Milho</title>
+
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span class="logo-icon">🌽</span>
+            <h2>Delícias do Milho</h2>
+        </div>
+
+        <nav>
+
+            <button class="menu-item active" data-page="dashboard">
+                🏠 Dashboard
+            </button>
+
+            <button class="menu-item" data-page="produtos">
+                📦 Produtos
+            </button>
+
+            <button class="menu-item" data-page="fechamento">
+                📝 Fechamento
+            </button>
+
+            <button class="menu-item" data-page="historico">
+                📄 Histórico
+            </button>
+
+            <button class="menu-item" data-page="configuracoes">
+                ⚙ Configurações
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="content">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1 id="page-title">
+                    Dashboard
+                </h1>
+
+                <p id="page-description">
+                    Bem-vindo ao sistema.
+                </p>
+
+            </div>
+
+            <div class="date">
+
+                <span id="dataAtual"></span>
+
+            </div>
+
+        </header>
+
+        <!-- Aqui o JavaScript vai trocar as telas -->
+        <section id="app">
+
+        </section>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
