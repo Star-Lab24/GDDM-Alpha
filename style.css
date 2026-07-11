@@ -1,8 +1,9 @@
 /*==================================================
-    DELÍCIAS DO MILHO 2.0
+    DELÍCIAS DO MILHO 3.0
     PARTE 1
-    Reset • Variáveis • Layout
+    Reset • Variáveis • Base
 ==================================================*/
+
 
 /*====================
 RESET
@@ -22,13 +23,13 @@ body{
 
     font-family:"Segoe UI",Arial,sans-serif;
 
-    background:var(--bg);
+    background:var(--cor-fundo);
 
-    color:var(--text);
+    color:var(--cor-texto);
 
     min-height:100vh;
 
-    display:flex;
+    line-height:1.5;
 
 }
 
@@ -39,37 +40,193 @@ VARIÁVEIS
 
 :root{
 
-    /* Cores */
+    /* Cores principais */
 
     --verde:#3D8B40;
     --verde-hover:#2F7332;
+    --verde-claro:#EAF6EA;
 
     --amarelo:#F4B400;
+    --amarelo-claro:#FFF6DA;
 
     --vermelho:#D9534F;
 
-    --azul:#1976D2;
+    /* Fundo */
 
-    --bg:#F4F6F3;
+    --cor-fundo:#F5F6EF;
+    --cor-card:#FFFFFF;
 
-    --card:#FFFFFF;
+    /* Texto */
 
-    --text:#333333;
+    --cor-texto:#333333;
+    --cor-texto-secundario:#666666;
 
-    --text-light:#666666;
+    /* Bordas */
 
-    --border:#E4E4E4;
+    --cor-borda:#E3E3E3;
 
     /* Layout */
 
+    --sidebar-width:260px;
+
     --radius:16px;
 
+    --radius-small:10px;
+
     --shadow:
-    0 8px 24px rgba(0,0,0,.08);
+
+        0 8px 24px rgba(0,0,0,.08);
 
     --transition:.25s ease;
 
 }
+
+
+/*====================
+ELEMENTOS
+====================*/
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+button,
+input,
+textarea,
+select{
+
+    font:inherit;
+
+}
+
+button{
+
+    cursor:pointer;
+
+}
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+}
+
+ul{
+
+    list-style:none;
+
+}
+
+
+/*====================
+CONTEÚDO
+====================*/
+
+.conteudo{
+
+    margin-left:var(--sidebar-width);
+
+    width:calc(100% - var(--sidebar-width));
+
+    padding:30px;
+
+    min-height:100vh;
+
+}
+
+
+/*====================
+PÁGINAS
+====================*/
+
+.pagina{
+
+    display:none;
+
+    animation:fade .25s ease;
+
+}
+
+.pagina.ativa{
+
+    display:block;
+
+}
+
+
+/*====================
+TÍTULOS
+====================*/
+
+h1{
+
+    color:var(--verde);
+
+    font-size:32px;
+
+    margin-bottom:10px;
+
+}
+
+h2{
+
+    color:var(--verde);
+
+    font-size:24px;
+
+    margin-bottom:15px;
+
+}
+
+h3{
+
+    font-size:18px;
+
+    margin-bottom:10px;
+
+}
+
+p{
+
+    color:var(--cor-texto-secundario);
+
+}
+
+
+/*====================
+ANIMAÇÃO PADRÃO
+====================*/
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/*==================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 2
+    Sidebar • Logo • Menu
+==================================================*/
 
 
 /*====================
@@ -78,15 +235,15 @@ SIDEBAR
 
 .sidebar{
 
-    width:260px;
-
-    height:100vh;
-
     position:fixed;
+
+    top:0;
 
     left:0;
 
-    top:0;
+    width:var(--sidebar-width);
+
+    height:100vh;
 
     display:flex;
 
@@ -101,6 +258,11 @@ SIDEBAR
     padding:24px;
 
     color:#FFF;
+
+    box-shadow:
+        5px 0 20px rgba(0,0,0,.12);
+
+    z-index:1000;
 
 }
 
@@ -121,15 +283,21 @@ LOGO
 
     display:block;
 
-    font-size:48px;
+    font-size:50px;
+
+    margin-bottom:8px;
 
 }
 
 .logo h2{
 
-    margin-top:10px;
+    color:#FFF;
 
     font-size:22px;
+
+    font-weight:700;
+
+    margin:0;
 
 }
 
@@ -144,29 +312,49 @@ MENU
 
     flex-direction:column;
 
-    gap:10px;
+    gap:12px;
 
 }
 
+
+/*====================
+BOTÕES
+====================*/
+
 .sidebar button{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    width:100%;
+
+    padding:14px 16px;
 
     border:none;
 
     border-radius:12px;
 
-    padding:14px;
-
-    background:rgba(255,255,255,.15);
+    background:rgba(255,255,255,.12);
 
     color:#FFF;
 
-    text-align:left;
+    font-size:15px;
 
-    cursor:pointer;
+    font-weight:500;
+
+    text-align:left;
 
     transition:var(--transition);
 
 }
+
+
+/*====================
+HOVER
+====================*/
 
 .sidebar button:hover{
 
@@ -174,7 +362,14 @@ MENU
 
     color:var(--verde);
 
+    transform:translateX(4px);
+
 }
+
+
+/*====================
+BOTÃO ATIVO
+====================*/
 
 .sidebar button.ativo{
 
@@ -182,9 +377,14 @@ MENU
 
     color:var(--verde);
 
-    font-weight:bold;
+    font-weight:700;
 
 }
+
+
+/*====================
+BOTÃO TEMA
+====================*/
 
 .tema{
 
@@ -194,74 +394,63 @@ MENU
 
 
 /*====================
-CONTEÚDO
+FOCO
 ====================*/
 
-.conteudo{
+.sidebar button:focus-visible{
 
-    margin-left:260px;
+    outline:3px solid rgba(255,255,255,.5);
 
-    width:calc(100% - 260px);
-
-    padding:30px;
+    outline-offset:2px;
 
 }
 
 
 /*====================
-PÁGINAS
+ROLAGEM DO MENU
 ====================*/
 
-.pagina{
+.sidebar nav{
 
-    display:none;
+    overflow-y:auto;
 
-}
-
-.pagina.ativa{
-
-    display:block;
+    scrollbar-width:thin;
 
 }
-
-
-/*====================
-TÍTULOS
-====================*/
-
-h1{
-
-    color:var(--verde);
-
-    margin-bottom:8px;
-
-    font-size:32px;
-
-}
-
-h2{
-
-    color:var(--verde);
-
-    margin-bottom:16px;
-
-}
-
-p{
-
-    color:var(--text-light);
-
-}
-
 /*==================================================
-    DELÍCIAS DO MILHO 2.0
-    PARTE 2
-    Cards • Formulários • Botões
+    DELÍCIAS DO MILHO 3.0
+    PARTE 3
+    Dashboard • Cards • Painéis
 ==================================================*/
 
 
 /*====================
-CARDS
+HEADER
+====================*/
+
+header{
+
+    margin-bottom:30px;
+
+}
+
+header h1{
+
+    margin-bottom:8px;
+
+}
+
+#dataAtual{
+
+    font-size:15px;
+
+    color:var(--cor-texto-secundario);
+
+}
+
+
+/*====================
+GRID DOS CARDS
 ====================*/
 
 .cards{
@@ -277,19 +466,24 @@ CARDS
 
 }
 
+
+/*====================
+CARD
+====================*/
+
 .card{
 
-    background:var(--card);
+    position:relative;
+
+    background:var(--cor-card);
 
     border-radius:var(--radius);
 
     padding:24px;
 
-    box-shadow:var(--shadow);
-
-    position:relative;
-
     overflow:hidden;
+
+    box-shadow:var(--shadow);
 
     transition:var(--transition);
 
@@ -301,9 +495,9 @@ CARDS
 
     position:absolute;
 
-    left:0;
-
     top:0;
+
+    left:0;
 
     width:100%;
 
@@ -315,17 +509,23 @@ CARDS
 
 .card:hover{
 
-    transform:translateY(-5px);
+    transform:translateY(-6px);
+
+    box-shadow:
+
+    0 14px 30px rgba(0,0,0,.12);
 
 }
 
 .card h3{
 
+    color:var(--cor-texto-secundario);
+
     font-size:17px;
 
-    color:var(--text-light);
-
     margin-bottom:18px;
+
+    font-weight:600;
 
 }
 
@@ -333,7 +533,7 @@ CARDS
 
     font-size:30px;
 
-    font-weight:bold;
+    font-weight:700;
 
     color:var(--verde);
 
@@ -348,7 +548,7 @@ PAINÉIS
 .alertas,
 #areaRelatorio{
 
-    background:var(--card);
+    background:var(--cor-card);
 
     border-radius:var(--radius);
 
@@ -356,18 +556,131 @@ PAINÉIS
 
     padding:24px;
 
-    margin-top:25px;
+    margin-top:24px;
 
 }
 
 
 /*====================
-FORMULÁRIOS
+TÍTULOS DOS PAINÉIS
+====================*/
+
+.grafico h2,
+.alertas h2{
+
+    margin-bottom:18px;
+
+}
+
+
+/*====================
+ÁREA DO GRÁFICO
+====================*/
+
+#graficoVendas{
+
+    width:100%;
+
+    min-height:300px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:2px dashed var(--cor-borda);
+
+    border-radius:12px;
+
+    color:var(--cor-texto-secundario);
+
+    background:var(--verde-claro);
+
+}
+
+
+/*====================
+ALERTAS
+====================*/
+
+#alertasEstoque{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    line-height:1.6;
+
+}
+
+
+/*====================
+ALERTA INDIVIDUAL
+====================*/
+
+.alerta{
+
+    background:#FFF4E5;
+
+    border-left:5px solid var(--amarelo);
+
+    padding:14px;
+
+    border-radius:10px;
+
+    color:#8A5A00;
+
+    font-weight:500;
+
+}
+
+.alerta.erro{
+
+    background:#FDECEC;
+
+    border-left-color:var(--vermelho);
+
+    color:#B3261E;
+
+}
+
+
+/*====================
+ESTADO VAZIO
+====================*/
+
+.vazio{
+
+    text-align:center;
+
+    color:var(--cor-texto-secundario);
+
+    padding:40px 20px;
+
+    font-style:italic;
+
+}
+/*==================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 4
+    Formulários • Campos • Botões
+==================================================*/
+
+
+/*====================
+FORMULÁRIO
 ====================*/
 
 .formulario{
 
-    background:var(--card);
+    width:100%;
+
+    max-width:720px;
+
+    background:var(--cor-card);
 
     border-radius:var(--radius);
 
@@ -379,11 +692,34 @@ FORMULÁRIOS
 
     flex-direction:column;
 
-    gap:16px;
-
-    max-width:700px;
+    gap:18px;
 
     margin-bottom:30px;
+
+}
+
+
+/*====================
+GRUPOS
+====================*/
+
+.campo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.campo label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:var(--cor-texto);
 
 }
 
@@ -393,36 +729,51 @@ CAMPOS
 ====================*/
 
 input,
-select,
-textarea{
+textarea,
+select{
 
     width:100%;
 
     padding:14px 16px;
 
-    border:1px solid var(--border);
+    border:1px solid var(--cor-borda);
 
     border-radius:12px;
 
-    font-size:16px;
-
-    outline:none;
-
     background:#FFF;
+
+    color:var(--cor-texto);
+
+    font-size:15px;
 
     transition:var(--transition);
 
 }
 
+input::placeholder,
+textarea::placeholder{
+
+    color:#999;
+
+}
+
 input:focus,
-select:focus,
-textarea:focus{
+textarea:focus,
+select:focus{
+
+    outline:none;
 
     border-color:var(--verde);
 
-    box-shadow:0 0 0 3px rgba(61,139,64,.15);
+    box-shadow:
+        0 0 0 4px rgba(61,139,64,.15);
 
 }
+
+
+/*====================
+TEXTAREA
+====================*/
 
 textarea{
 
@@ -437,26 +788,25 @@ textarea{
 BOTÕES
 ====================*/
 
-.btn,
-button{
+.btn{
 
     border:none;
 
     border-radius:12px;
 
-    padding:14px 18px;
-
-    cursor:pointer;
+    padding:14px 20px;
 
     font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
 
     transition:var(--transition);
 
 }
 
-.btn-primary,
-.formulario button,
-section button{
+.btn-primary{
 
     background:var(--verde);
 
@@ -464,25 +814,9 @@ section button{
 
 }
 
-.btn-primary:hover,
-.formulario button:hover,
-section button:hover{
+.btn-primary:hover{
 
     background:var(--verde-hover);
-
-}
-
-.btn-danger{
-
-    background:var(--vermelho);
-
-    color:#FFF;
-
-}
-
-.btn-danger:hover{
-
-    filter:brightness(.9);
 
 }
 
@@ -500,14 +834,73 @@ section button:hover{
 
 }
 
+.btn-danger{
+
+    background:var(--vermelho);
+
+    color:#FFF;
+
+}
+
+.btn-danger:hover{
+
+    filter:brightness(.92);
+
+}
+
+
+/* Compatibilidade com HTML atual */
+
+.formulario button,
+section button{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:14px 20px;
+
+    background:var(--verde);
+
+    color:#FFF;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+}
+
+.formulario button:hover,
+section button:hover{
+
+    background:var(--verde-hover);
+
+}
+
 
 /*====================
-PRODUTOS DO FECHAMENTO
+FECHAMENTO
 ====================*/
+
+#produtosFechamento{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    margin:25px 0;
+
+}
 
 .produto-fechamento{
 
-    background:var(--card);
+    background:var(--cor-card);
 
     border-radius:var(--radius);
 
@@ -518,15 +911,13 @@ PRODUTOS DO FECHAMENTO
     display:grid;
 
     grid-template-columns:
-    2fr
-    1fr
-    1fr;
+        2fr
+        1fr
+        1fr;
 
     gap:18px;
 
     align-items:end;
-
-    margin-bottom:15px;
 
 }
 
@@ -538,17 +929,71 @@ PRODUTOS DO FECHAMENTO
 
     margin-bottom:10px;
 
-        }
+}
 
+
+/*====================
+RESUMO
+====================*/
+
+.resumo-fechamento{
+
+    margin:25px 0;
+
+    background:var(--cor-card);
+
+    border-left:6px solid var(--amarelo);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    padding:22px;
+
+}
+
+.resumo-fechamento h3{
+
+    margin-bottom:16px;
+
+}
+
+.resumo-fechamento p{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:10px 0;
+
+    border-bottom:1px solid var(--cor-borda);
+
+}
+
+.resumo-fechamento p:last-child{
+
+    border-bottom:none;
+
+}
+
+.resumo-fechamento span{
+
+    font-weight:700;
+
+    color:var(--verde);
+
+    }
 /*==================================================
-    DELÍCIAS DO MILHO 2.0
-    PARTE 3
-    Tabelas • Responsividade • Dark Mode
+    DELÍCIAS DO MILHO 3.0
+    PARTE 5
+    Tabelas • Histórico • Relatórios
 ==================================================*/
 
 
 /*====================
-TABELAS
+CONTAINER
 ====================*/
 
 .table-container{
@@ -557,7 +1002,14 @@ TABELAS
 
     overflow-x:auto;
 
+    margin-top:20px;
+
 }
+
+
+/*====================
+TABELA
+====================*/
 
 table{
 
@@ -567,7 +1019,7 @@ table{
 
     border-collapse:collapse;
 
-    background:var(--card);
+    background:var(--cor-card);
 
     border-radius:var(--radius);
 
@@ -575,15 +1027,16 @@ table{
 
     box-shadow:var(--shadow);
 
-    margin-top:20px;
-
 }
+
+
+/*====================
+CABEÇALHO
+====================*/
 
 thead{
 
     background:var(--verde);
-
-    color:#FFF;
 
 }
 
@@ -591,11 +1044,20 @@ th{
 
     padding:16px;
 
+    color:#FFF;
+
     text-align:center;
 
     font-size:15px;
 
+    font-weight:600;
+
 }
+
+
+/*====================
+CORPO
+====================*/
 
 td{
 
@@ -603,9 +1065,16 @@ td{
 
     text-align:center;
 
-    border-bottom:1px solid var(--border);
+    border-bottom:1px solid var(--cor-borda);
+
+    color:var(--cor-texto);
 
 }
+
+
+/*====================
+LINHAS
+====================*/
 
 tbody tr{
 
@@ -621,69 +1090,231 @@ tbody tr:nth-child(even){
 
 tbody tr:hover{
 
-    background:#f2f8ef;
-
-}
-
-td button{
-
-    padding:8px 14px;
-
-    margin:2px;
+    background:#f4f9ef;
 
 }
 
 
 /*====================
-RESUMO DO FECHAMENTO
+ÚLTIMA LINHA
 ====================*/
 
-.resumo-fechamento{
+tbody tr:last-child td{
 
-    background:var(--card);
+    border-bottom:none;
+
+}
+
+
+/*====================
+BOTÕES DA TABELA
+====================*/
+
+td .btn,
+td button{
+
+    padding:8px 12px;
+
+    margin:2px;
+
+    font-size:14px;
+
+}
+
+
+/*====================
+COLUNA AÇÕES
+====================*/
+
+.col-acoes{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:6px;
+
+    flex-wrap:wrap;
+
+}
+
+
+/*====================
+PESQUISA
+====================*/
+
+input[type="search"]{
+
+    width:100%;
+
+    max-width:400px;
+
+    margin:20px 0;
+
+}
+
+
+/*====================
+RELATÓRIO
+====================*/
+
+#areaRelatorio{
+
+    background:var(--cor-card);
 
     border-radius:var(--radius);
 
     box-shadow:var(--shadow);
 
-    padding:20px;
+    padding:30px;
 
-    margin:25px 0;
-
-    border-left:6px solid var(--amarelo);
+    line-height:1.8;
 
 }
 
-.resumo-fechamento p{
+#areaRelatorio h2{
 
-    display:flex;
+    text-align:center;
 
-    justify-content:space-between;
-
-    margin:10px 0;
+    margin-bottom:20px;
 
 }
 
-.resumo-fechamento span{
+#areaRelatorio hr{
 
-    color:var(--verde);
+    margin:20px 0;
 
-    font-weight:bold;
+    border:none;
+
+    border-top:1px solid var(--cor-borda);
+
+}
+
+#areaRelatorio table{
+
+    margin:20px 0;
+
+}
+
+#areaRelatorio p{
+
+    margin:8px 0;
 
 }
 
 
 /*====================
-RESPONSIVIDADE
+ESTADO VAZIO
 ====================*/
 
-@media(max-width:992px){
+.sem-dados{
+
+    text-align:center;
+
+    padding:30px;
+
+    color:var(--cor-texto-secundario);
+
+    font-style:italic;
+
+}
+
+
+/*====================
+IMPRESSÃO
+====================*/
+
+@media print{
+
+    body{
+
+        background:#FFF;
+
+    }
+
+    .sidebar,
+
+    button,
+
+    input,
+
+    textarea,
+
+    select{
+
+        display:none !important;
+
+    }
+
+    .conteudo{
+
+        margin:0;
+
+        width:100%;
+
+        padding:0;
+
+    }
+
+    #areaRelatorio{
+
+        box-shadow:none;
+
+        border:none;
+
+    }
+
+}
+/*==================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 6
+    Responsividade
+==================================================*/
+
+
+/*====================
+NOTEBOOKS
+====================*/
+
+@media (max-width:1200px){
+
+    :root{
+
+        --sidebar-width:220px;
+
+    }
+
+    .conteudo{
+
+        padding:25px;
+
+    }
+
+    .cards{
+
+        grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    }
+
+}
+
+
+/*====================
+TABLETS
+====================*/
+
+@media (max-width:992px){
+
+    :root{
+
+        --sidebar-width:90px;
+
+    }
 
     .sidebar{
 
-        width:90px;
-
-        padding:18px 10px;
+        padding:20px 10px;
 
     }
 
@@ -693,9 +1324,19 @@ RESPONSIVIDADE
 
     }
 
+    .logo span{
+
+        font-size:40px;
+
+    }
+
     .sidebar button{
 
+        justify-content:center;
+
         text-align:center;
+
+        padding:14px;
 
         font-size:0;
 
@@ -709,15 +1350,18 @@ RESPONSIVIDADE
 
     .conteudo{
 
-        margin-left:90px;
-
-        width:calc(100% - 90px);
+        padding:20px;
 
     }
 
 }
 
-@media(max-width:768px){
+
+/*====================
+CELULARES
+====================*/
+
+@media (max-width:768px){
 
     body{
 
@@ -733,7 +1377,21 @@ RESPONSIVIDADE
 
         height:auto;
 
-        padding:18px;
+        padding:20px;
+
+    }
+
+    .logo{
+
+        margin-bottom:20px;
+
+    }
+
+    .logo h2{
+
+        display:block;
+
+        font-size:20px;
 
     }
 
@@ -741,7 +1399,8 @@ RESPONSIVIDADE
 
         display:grid;
 
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:
+        repeat(2,1fr);
 
         gap:10px;
 
@@ -751,15 +1410,31 @@ RESPONSIVIDADE
 
         font-size:15px;
 
+        justify-content:center;
+
+        padding:14px;
+
+    }
+
+    .sidebar button::first-letter{
+
+        font-size:inherit;
+
+    }
+
+    .tema{
+
+        margin-top:15px;
+
     }
 
     .conteudo{
 
-        width:100%;
-
         margin:0;
 
-        padding:20px;
+        width:100%;
+
+        padding:18px;
 
     }
 
@@ -775,13 +1450,34 @@ RESPONSIVIDADE
 
     }
 
+    table{
+
+        display:block;
+
+        overflow-x:auto;
+
+        white-space:nowrap;
+
+    }
+
+    .formulario{
+
+        max-width:100%;
+
+    }
+
 }
 
-@media(max-width:480px){
 
-    .sidebar nav{
+/*====================
+CELULARES PEQUENOS
+====================*/
 
-        grid-template-columns:1fr;
+@media (max-width:480px){
+
+    .conteudo{
+
+        padding:15px;
 
     }
 
@@ -791,17 +1487,244 @@ RESPONSIVIDADE
 
     }
 
+    h2{
+
+        font-size:22px;
+
+    }
+
+    .card{
+
+        padding:20px;
+
+    }
+
     .card p{
 
         font-size:26px;
 
     }
 
-    .conteudo{
+    input,
+    textarea,
+    select,
+    button{
 
-        padding:15px;
+        font-size:15px;
 
     }
+
+    .sidebar nav{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/*====================
+TELAS GRANDES
+====================*/
+
+@media (min-width:1500px){
+
+    .cards{
+
+        grid-template-columns:
+        repeat(4,1fr);
+
+    }
+
+    .conteudo{
+
+        max-width:1700px;
+
+    }
+
+}
+/*==================================================
+    DELÍCIAS DO MILHO 3.0
+    PARTE 7
+    Dark Mode • Scrollbar • Animações
+==================================================*/
+
+
+/*====================
+DARK MODE
+====================*/
+
+body.dark{
+
+    --cor-fundo:#121212;
+
+    --cor-card:#1E1E1E;
+
+    --cor-texto:#F5F5F5;
+
+    --cor-texto-secundario:#BDBDBD;
+
+    --cor-borda:#353535;
+
+    background:var(--cor-fundo);
+
+    color:var(--cor-texto);
+
+}
+
+
+/*====================
+SIDEBAR
+====================*/
+
+body.dark .sidebar{
+
+    background:linear-gradient(
+        180deg,
+        #245D29,
+        #173C1A
+    );
+
+}
+
+
+/*====================
+COMPONENTES
+====================*/
+
+body.dark .card,
+body.dark .formulario,
+body.dark .grafico,
+body.dark .alertas,
+body.dark .resumo-fechamento,
+body.dark table,
+body.dark #areaRelatorio,
+body.dark .produto-fechamento{
+
+    background:var(--cor-card);
+
+    color:var(--cor-texto);
+
+}
+
+
+/*====================
+INPUTS
+====================*/
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+
+    background:#2A2A2A;
+
+    color:var(--cor-texto);
+
+    border-color:var(--cor-borda);
+
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+
+    color:#9E9E9E;
+
+}
+
+
+/*====================
+TABELAS
+====================*/
+
+body.dark tbody tr:nth-child(even){
+
+    background:#242424;
+
+}
+
+body.dark tbody tr:hover{
+
+    background:#2F2F2F;
+
+}
+
+body.dark td{
+
+    border-color:var(--cor-borda);
+
+}
+
+
+/*====================
+GRÁFICO
+====================*/
+
+body.dark #graficoVendas{
+
+    background:#252525;
+
+    border-color:#444;
+
+    color:#CCC;
+
+}
+
+
+/*====================
+RESUMO
+====================*/
+
+body.dark .resumo-fechamento{
+
+    border-left-color:var(--amarelo);
+
+}
+
+body.dark .resumo-fechamento span{
+
+    color:#7ED957;
+
+}
+
+
+/*====================
+ALERTAS
+====================*/
+
+body.dark .alerta{
+
+    background:#3C3315;
+
+    color:#FFD54F;
+
+}
+
+body.dark .alerta.erro{
+
+    background:#442323;
+
+    color:#FF8A80;
+
+}
+
+
+/*====================
+BOTÕES
+====================*/
+
+body.dark .btn-primary,
+body.dark .formulario button,
+body.dark section button{
+
+    background:var(--verde);
+
+}
+
+body.dark .btn-primary:hover,
+body.dark .formulario button:hover,
+body.dark section button:hover{
+
+    background:var(--verde-hover);
 
 }
 
@@ -814,11 +1737,13 @@ SCROLLBAR
 
     width:10px;
 
+    height:10px;
+
 }
 
 ::-webkit-scrollbar-track{
 
-    background:#ececec;
+    background:#E8E8E8;
 
 }
 
@@ -830,63 +1755,9 @@ SCROLLBAR
 
 }
 
+::-webkit-scrollbar-thumb:hover{
 
-/*====================
-DARK MODE
-====================*/
-
-body.dark{
-
-    --bg:#121212;
-
-    --card:#1f1f1f;
-
-    --text:#f2f2f2;
-
-    --text-light:#cfcfcf;
-
-    --border:#343434;
-
-}
-
-body.dark .sidebar{
-
-    background:linear-gradient(
-        180deg,
-        #225f28,
-        #153b18
-    );
-
-}
-
-body.dark input,
-body.dark textarea,
-body.dark select{
-
-    background:#2b2b2b;
-
-    color:#FFF;
-
-    border-color:#444;
-
-}
-
-body.dark input::placeholder,
-body.dark textarea::placeholder{
-
-    color:#999;
-
-}
-
-body.dark tbody tr:nth-child(even){
-
-    background:#252525;
-
-}
-
-body.dark tbody tr:hover{
-
-    background:#303030;
+    background:var(--verde-hover);
 
 }
 
@@ -911,34 +1782,73 @@ ANIMAÇÕES
 button,
 input,
 textarea,
-select{
+select,
+.produto-fechamento{
 
-    transition:var(--transition);
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
 
 }
 
-.fade{
+button:active{
 
-    animation:fade .3s ease;
+    transform:scale(.98);
 
 }
 
-@keyframes fade{
+input:focus,
+textarea:focus,
+select:focus{
 
-    from{
+    transform:translateY(-1px);
 
-        opacity:0;
+}
 
-        transform:translateY(10px);
 
-    }
+/*====================
+SELEÇÃO DE TEXTO
+====================*/
 
-    to{
+::selection{
 
-        opacity:1;
+    background:var(--amarelo);
 
-        transform:translateY(0);
+    color:#222;
 
-    }
+}
+
+
+/*====================
+ESTADO DESABILITADO
+====================*/
+
+button:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+
+/*====================
+RODAPÉ (FUTURO)
+====================*/
+
+footer{
+
+    margin-top:40px;
+
+    text-align:center;
+
+    color:var(--cor-texto-secundario);
+
+    font-size:14px;
 
 }
