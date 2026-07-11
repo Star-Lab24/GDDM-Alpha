@@ -2233,3 +2233,31 @@ iniciarSistema = function () {
     iniciarConfiguracoes();
 
 };
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+        carregarBanco();
+        carregarElementos();
+        atualizarData();
+        aplicarTema();
+        iniciarMenu();
+
+        iniciarProdutos();
+        iniciarFechamento();
+        iniciarSalvarFechamento();
+        iniciarDashboard();
+        iniciarHistorico();
+        iniciarRelatorios();
+        iniciarBackup();
+        iniciarConfiguracoes();
+
+        if (el.btnTema) {
+            el.btnTema.addEventListener(
+                "click",
+                alternarTema
+            );
+        }
+
+        console.log("Sistema iniciado corretamente.");
+    }
+);
