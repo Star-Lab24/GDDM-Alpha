@@ -128,17 +128,50 @@ app.innerHTML=`
 // PRODUTOS
 // ==============================
 
-function produtos(){
+function produtos() {
 
-pageTitle.innerHTML="Produtos";
+    pageTitle.innerHTML = "Produtos";
+    pageDescription.innerHTML = "Cadastre os produtos vendidos.";
 
-pageDescription.innerHTML="Cadastro de produtos.";
+    app.innerHTML = `
 
-app.innerHTML=`
+    <div class="pagina">
 
-<h2>Em desenvolvimento...</h2>
+        <div class="form-card">
 
-`;
+            <h2>Novo Produto</h2>
+
+            <div class="form-grid">
+
+                <input id="nome" type="text" placeholder="Nome do produto">
+
+                <input id="venda" type="number" placeholder="Valor de venda">
+
+                <input id="custo" type="number" placeholder="Valor de custo">
+
+                <textarea id="descricao" placeholder="Descrição"></textarea>
+
+            </div>
+
+            <button class="btn" id="salvarProduto">
+
+                Salvar Produto
+
+            </button>
+
+        </div>
+
+        <div class="lista-produtos" id="listaProdutos"></div>
+
+    </div>
+
+    `;
+
+    carregarProdutos();
+
+    document
+        .getElementById("salvarProduto")
+        .addEventListener("click", salvarProduto);
 
 }
 
@@ -201,3 +234,176 @@ app.innerHTML=`
 // ==============================
 
 dashboard();
+
+// ==============================
+// LOCAL STORAGE
+// ==============================
+
+function pegarProdutos() {
+
+    return JSON.parse(localStorage.getItem("produtos")) || [];
+
+}
+
+function salvarLista(produtos) {
+
+    localStorage.setItem(
+        "produtos",
+        JSON.stringify(produtos)
+    );
+
+}
+
+// ==============================
+// SALVAR PRODUTO
+// ==============================
+
+function salvarProduto() {
+
+    const nome = document.getElementById("nome").value;
+
+    const venda = document.getElementById("venda").value;
+
+    const custo = document.getElementById("custo").value;
+
+    const descricao = document.getElementById("descricao").value;
+
+    if (nome == "") {
+
+        alert("Informe o nome do produto.");
+
+        return;
+
+    }
+
+    const produtos = pegarProdutos();
+
+    produtos.push({
+
+        id: Date.now(),
+
+        nome,
+
+        venda,
+
+        custo,
+
+        descricao
+
+    });
+
+    salvarLista(produtos);
+
+    carregarProdutos();
+
+    limparFormulario();
+
+}
+
+// ==============================
+// LIMPAR
+// ==============================
+
+function limparFormulario() {
+
+    document.getElementById("nome").value = "";
+
+    document.getElementById("venda").value = "";
+
+    document.getElementById("custo").value = "";
+
+    document.getElementById("descricao").value = "";
+
+}
+
+// ==============================
+// LISTAR PRODUTOS
+// ==============================
+
+function carregarProdutos() {
+
+    const lista = document.getElementById("listaProdutos");
+
+    if (!lista) return;
+
+    const produtos = pegarProdutos();
+
+    if (produtos.length == 0) {
+
+        lista.innerHTML = `
+
+        <div class="card">
+
+            Nenhum produto cadastrado.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    lista.innerHTML = "";
+
+    produtos.forEach(produto => {
+
+        lista.innerHTML += `
+
+        <div class="card produto-card">
+
+            <div>
+
+                <h3>${produto.nome}</h3>
+
+                <small>${produto.descricao}</small>
+
+            </div>
+
+            <div>
+
+                <strong>Venda</strong>
+
+                <p>R$ ${produto.venda}</p>
+
+            </div>
+
+            <div>
+
+                <strong>Custo</strong>
+
+                <p>R$ ${produto.custo}</p>
+
+            </div>
+
+            <button
+                class="btn excluir"
+                onclick="excluirProduto(${produto.id})">
+
+                Excluir
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+// ==============================
+// EXCLUIR
+// ==============================
+
+function excluirProduto(id) {
+
+    let produtos = pegarProdutos();
+
+    produtos = produtos.filter(produto => produto.id != id);
+
+    salvarLista(produtos);
+
+    carregarProdutos();
+
+}
