@@ -1,525 +1,279 @@
-// ==============================
-// DELÍCIAS DO MILHO
-// SISTEMA DE GERENCIAMENTO
-// ==============================
+/* =====================================================
+   DELÍCIAS DO MILHO
+   SCRIPT PRINCIPAL - PARTE 1
+
+   Módulos:
+   - Banco de dados local
+   - Navegação
+   - Tema escuro
+   - Produtos
+===================================================== */
 
 
-// ==============================
-// ELEMENTOS
-// ==============================
 
-const app = document.getElementById("app");
-
-const pageTitle = document.getElementById("page-title");
-
-const pageDescription = document.getElementById("page-description");
-
-const dataAtual = document.getElementById("dataAtual");
-
-const menuItems = document.querySelectorAll(".menu-item");
+// =====================================================
+// BANCO DE DADOS (LOCAL STORAGE)
+// =====================================================
 
 
-// ==============================
-// BANCO LOCAL
-// ==============================
+let produtos = JSON.parse(
+    localStorage.getItem("produtos")
+) || [];
 
 
-function bancoInicial(){
+let fechamentos = JSON.parse(
+    localStorage.getItem("fechamentos")
+) || [];
 
-    if(!localStorage.getItem("produtos")){
-        localStorage.setItem("produtos", JSON.stringify([]));
+
+
+let configuracoes = JSON.parse(
+    localStorage.getItem("configuracoes")
+) || {
+
+    tema: "claro"
+
+};
+
+
+
+
+
+// =====================================================
+// NAVEGAÇÃO DO SISTEMA
+// =====================================================
+
+
+function mostrarPagina(pagina) {
+
+
+    const paginas =
+    document.querySelectorAll(".pagina");
+
+
+    paginas.forEach(secao => {
+
+        secao.classList.remove("ativa");
+
+    });
+
+
+
+    const selecionada =
+    document.getElementById(pagina);
+
+
+
+    if(selecionada){
+
+        selecionada.classList.add("ativa");
+
     }
 
-
-    if(!localStorage.getItem("vendas")){
-        localStorage.setItem("vendas", JSON.stringify([]));
-    }
-
-
-    if(!localStorage.getItem("relatorios")){
-        localStorage.setItem("relatorios", JSON.stringify([]));
-    }
-
-
-    if(!localStorage.getItem("config")){
-        localStorage.setItem("config", JSON.stringify({
-
-            empresa:"Delícias do Milho",
-
-            taxa:0,
-
-            imposto:0
-
-        }));
-    }
 
 }
 
 
-bancoInicial();
 
 
 
-// ==============================
-// FUNÇÕES DO BANCO
-// ==============================
+// =====================================================
+// DATA AUTOMÁTICA
+// =====================================================
 
 
-function pegarDados(nome){
+function atualizarData(){
 
-    return JSON.parse(
-        localStorage.getItem(nome)
-    ) || [];
+
+    const elemento =
+    document.getElementById("dataAtual");
+
+
+    if(elemento){
+
+
+        const hoje =
+        new Date();
+
+
+        elemento.innerHTML =
+        "📅 " +
+        hoje.toLocaleDateString("pt-BR");
+
+
+    }
+
 
 }
 
 
 
-function salvarDados(nome,dados){
+
+
+// =====================================================
+// SISTEMA DE TEMA
+// =====================================================
+
+
+function alternarTema(){
+
+
+    document.body.classList.toggle("dark");
+
+
+
+    if(
+        document.body.classList.contains("dark")
+    ){
+
+        configuracoes.tema = "escuro";
+
+    }
+
+    else{
+
+        configuracoes.tema = "claro";
+
+    }
+
+
+
+    salvarConfiguracoes();
+
+
+}
+
+
+
+
+function carregarTema(){
+
+
+    if(
+        configuracoes.tema === "escuro"
+    ){
+
+        document.body.classList.add("dark");
+
+    }
+
+
+}
+
+
+
+
+
+function salvarConfiguracoes(){
+
 
     localStorage.setItem(
 
-        nome,
+        "configuracoes",
 
-        JSON.stringify(dados)
+        JSON.stringify(configuracoes)
 
     );
 
-}
-
-
-
-// ==============================
-// DATA ATUAL
-// ==============================
-
-
-const hoje = new Date();
-
-
-if(dataAtual){
-
-    dataAtual.innerHTML = hoje.toLocaleDateString(
-        "pt-BR",
-        {
-            weekday:"long",
-            day:"2-digit",
-            month:"long",
-            year:"numeric"
-        }
-    );
 
 }
 
 
 
-// ==============================
-// MENU
-// ==============================
 
 
-menuItems.forEach(botao=>{
 
-
-    botao.addEventListener(
-        "click",
-        ()=>{
-
-
-            menuItems.forEach(item=>{
-
-                item.classList.remove("active");
-
-            });
-
-
-            botao.classList.add("active");
-
-
-            abrirPagina(
-                botao.dataset.page
-            );
-
-
-        }
-    );
-
-
-});
-
-
-
-// ==============================
-// NAVEGAÇÃO
-// ==============================
-
-
-function abrirPagina(pagina){
-
-
-    switch(pagina){
-
-
-        case "dashboard":
-
-            dashboard();
-
-        break;
-
-
-
-        case "produtos":
-
-            produtos();
-
-        break;
-
-
-
-        case "vendas":
-
-            vendas();
-
-        break;
-
-
-
-        case "fechamento":
-
-            fechamento();
-
-        break;
-
-
-
-        case "historico":
-
-            historico();
-
-        break;
-
-
-
-        case "configuracoes":
-
-            configuracoes();
-
-        break;
-
-
-    }
-
-
-}
-
-
-
-// ==============================
-// DASHBOARD
-// ==============================
-
-
-function dashboard(){
-
-
-    pageTitle.innerHTML="Dashboard";
-
-
-    pageDescription.innerHTML=
-    "Resumo das operações do dia.";
-
-
-
-    const produtos = pegarDados("produtos");
-
-
-    const vendas = pegarDados("vendas");
-
-
-
-    let totalVenda = 0;
-
-
-    let totalProdutos = 0;
-
-
-
-    vendas.forEach(v=>{
-
-
-        totalVenda += v.valor;
-
-
-        totalProdutos += v.quantidade;
-
-
-    });
-
-
-
-    let custo = 0;
-
-
-
-    vendas.forEach(v=>{
-
-
-        const produto = produtos.find(
-
-            p=>p.id == v.produtoId
-
-        );
-
-
-        if(produto){
-
-            custo += produto.custo * v.quantidade;
-
-        }
-
-
-    });
-
-
-
-    const lucro = totalVenda - custo;
-
-
-
-    app.innerHTML = `
-
-
-    <div class="cards">
-
-
-        <div class="card">
-
-            <h3>Venda do Dia</h3>
-
-            <h2>
-            R$ ${totalVenda.toFixed(2)}
-            </h2>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <h3>Lucro</h3>
-
-            <h2>
-            R$ ${lucro.toFixed(2)}
-            </h2>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <h3>Produtos Vendidos</h3>
-
-            <h2>
-            ${totalProdutos}
-            </h2>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <h3>Produtos Cadastrados</h3>
-
-            <h2>
-            ${produtos.length}
-            </h2>
-
-        </div>
-
-
-    </div>
-
-
-    `;
-
-
-}
-
-
-
-// ==============================
-// INICIAR
-// ==============================
-
-
-dashboard();
-
-// ==============================
+// =====================================================
 // PRODUTOS
-// ==============================
-
-
-function produtos(){
-
-
-    pageTitle.innerHTML="Produtos";
-
-    pageDescription.innerHTML=
-    "Cadastro e controle de estoque.";
+// =====================================================
 
 
 
-    app.innerHTML = `
-
-
-    <div class="pagina">
-
-
-        <div class="form-card">
-
-
-            <h2>Novo Produto</h2>
-
-
-            <div class="form-grid">
-
-
-                <input 
-                id="nomeProduto"
-                placeholder="Nome do produto">
-
-
-                <input 
-                id="valorVenda"
-                type="number"
-                placeholder="Valor de venda">
-
-
-                <input 
-                id="valorCusto"
-                type="number"
-                placeholder="Valor de custo">
-
-
-                <input 
-                id="estoqueProduto"
-                type="number"
-                placeholder="Quantidade estoque">
-
-
-                <textarea
-                id="descricaoProduto"
-                placeholder="Descrição">
-                </textarea>
-
-
-            </div>
-
-
-
-            <button 
-            class="btn"
-            onclick="salvarProduto()">
-
-            Salvar Produto
-
-            </button>
-
-
-
-        </div>
-
-
-
-        <div id="listaProdutos"></div>
-
-
-    </div>
-
-
-    `;
-
-
-
-    carregarProdutos();
-
-
-}
-
-
-
-
-// ==============================
-// SALVAR PRODUTO
-// ==============================
-
-
-function salvarProduto(){
+function adicionarProduto(){
 
 
     const nome =
-    document.getElementById("nomeProduto").value;
+    document.getElementById("nomeProduto").value.trim();
+
 
 
     const venda =
-    Number(document.getElementById("valorVenda").value);
+    Number(
+        document.getElementById("precoVenda").value
+    );
+
 
 
     const custo =
-    Number(document.getElementById("valorCusto").value);
+    Number(
+        document.getElementById("precoCusto").value
+    );
 
 
 
     const estoque =
-    Number(document.getElementById("estoqueProduto").value);
+    Number(
+        document.getElementById("estoque").value
+    );
 
 
 
-    const descricao =
-    document.getElementById("descricaoProduto").value;
 
 
+    if(
+        nome === "" ||
+        venda <= 0 ||
+        custo <= 0
+    ){
 
-    if(!nome){
 
-        alert("Digite o nome do produto.");
+        alert(
+            "Preencha todos os dados do produto."
+        );
+
 
         return;
+
 
     }
 
 
 
-    const produtos = pegarDados("produtos");
 
 
 
-    produtos.push({
+    const produto = {
 
 
-        id:Date.now(),
-
-        nome,
-
-        venda,
-
-        custo,
-
-        estoque,
-
-        descricao
+        id: Date.now(),
 
 
-    });
+        nome:nome,
+
+
+        precoVenda:venda,
+
+
+        precoCusto:custo,
+
+
+        estoqueInicial:estoque,
+
+
+        estoqueAtual:estoque
+
+
+    };
 
 
 
-    salvarDados(
-        "produtos",
-        produtos
-    );
+
+
+    produtos.push(produto);
+
+
+
+    salvarProdutos();
 
 
 
@@ -530,47 +284,51 @@ function salvarProduto(){
     limparProduto();
 
 
+
+    alert(
+        "Produto cadastrado com sucesso!"
+    );
+
+
 }
 
 
 
 
 
-// ==============================
-// LISTAR PRODUTOS
-// ==============================
+
+
+
+function salvarProdutos(){
+
+
+    localStorage.setItem(
+
+        "produtos",
+
+        JSON.stringify(produtos)
+
+    );
+
+
+}
+
+
+
+
+
+
 
 
 function carregarProdutos(){
 
 
-    const lista =
+    const tabela =
     document.getElementById("listaProdutos");
 
 
-    if(!lista)
-    return;
 
-
-
-    const produtos =
-    pegarDados("produtos");
-
-
-
-    if(produtos.length===0){
-
-
-        lista.innerHTML=`
-
-        <div class="card">
-
-        Nenhum produto cadastrado.
-
-        </div>
-
-        `;
-
+    if(!tabela){
 
         return;
 
@@ -578,66 +336,70 @@ function carregarProdutos(){
 
 
 
-
-    lista.innerHTML="";
-
+    tabela.innerHTML = "";
 
 
-    produtos.forEach(produto=>{
 
 
-        lista.innerHTML += `
+
+    produtos.forEach(produto => {
 
 
-        <div class="card produto-card">
+
+        tabela.innerHTML += `
 
 
-            <h3>
+        <tr>
+
+
+            <td>
             ${produto.nome}
-            </h3>
+            </td>
 
 
 
-            <p>
-            ${produto.descricao}
-            </p>
+            <td>
+            R$ ${produto.precoVenda.toFixed(2)}
+            </td>
 
 
 
-            <p>
-            Venda:
-            R$ ${produto.venda.toFixed(2)}
-            </p>
+            <td>
+            R$ ${produto.precoCusto.toFixed(2)}
+            </td>
 
 
 
-            <p>
-            Custo:
-            R$ ${produto.custo.toFixed(2)}
-            </p>
+            <td>
+            ${produto.estoqueAtual}
+            </td>
 
 
 
-            <p>
-            Estoque:
-            ${produto.estoque}
-            unidades
-            </p>
+            <td>
 
 
-
-            <button
-            class="btn excluir"
-            onclick="
-            excluirProduto(${produto.id})
+            <button onclick="
+            editarProduto(${produto.id})
             ">
-
-            Excluir
-
+            ✏️
             </button>
 
 
-        </div>
+
+            <button onclick="
+            excluirProduto(${produto.id})
+            ">
+            🗑️
+            </button>
+
+
+
+            </td>
+
+
+
+        </tr>
 
 
         `;
@@ -646,37 +408,185 @@ function carregarProdutos(){
     });
 
 
+
 }
 
 
 
 
 
-// ==============================
-// EXCLUIR PRODUTO
-// ==============================
+
+
+
+function editarProduto(id){
+
+
+    const produto =
+    produtos.find(
+        p => p.id === id
+    );
+
+
+
+    if(!produto){
+
+        return;
+
+    }
+
+
+
+
+
+    const novoNome =
+    prompt(
+        "Nome do produto:",
+        produto.nome
+    );
+
+
+
+    const novoEstoque =
+    prompt(
+        "Quantidade em estoque:",
+        produto.estoqueAtual
+    );
+
+
+
+    if(novoNome){
+
+
+        produto.nome =
+        novoNome;
+
+
+    }
+
+
+
+    if(novoEstoque){
+
+
+        produto.estoqueAtual =
+        Number(novoEstoque);
+
+
+    }
+
+
+
+
+    salvarProdutos();
+
+
+    carregarProdutos();
+
+
+
+}
+
+
+
+
+
+
 
 
 function excluirProduto(id){
 
 
-    let produtos =
-    pegarDados("produtos");
+
+    const confirmar =
+    confirm(
+        "Deseja remover este produto?"
+    );
+
+
+
+    if(!confirmar){
+
+        return;
+
+    }
 
 
 
     produtos =
     produtos.filter(
-        produto=>produto.id !== id
+
+        produto =>
+        produto.id !== id
+
     );
 
 
 
-    salvarDados(
-        "produtos",
-        produtos
-    );
+    salvarProdutos();
 
+
+
+    carregarProdutos();
+
+
+
+}
+
+
+
+
+
+
+
+function limparProduto(){
+
+
+
+    document.getElementById(
+        "nomeProduto"
+    ).value = "";
+
+
+
+    document.getElementById(
+        "precoVenda"
+    ).value = "";
+
+
+
+    document.getElementById(
+        "precoCusto"
+    ).value = "";
+
+
+
+    document.getElementById(
+        "estoque"
+    ).value = "";
+
+
+}
+
+
+
+
+
+// =====================================================
+// INICIALIZAÇÃO
+// =====================================================
+
+
+
+document.addEventListener(
+"DOMContentLoaded",
+
+()=>{
+
+
+    atualizarData();
+
+
+    carregarTema();
 
 
     carregarProdutos();
@@ -684,176 +594,35 @@ function excluirProduto(id){
 
 }
 
+);
 
+/* =====================================================
+   DELÍCIAS DO MILHO
+   SCRIPT PRINCIPAL - PARTE 2
 
+   Módulos:
+   - Fechamento do dia
+   - Controle de estoque
+   - Cálculo financeiro
+   - Relatório
+===================================================== */
 
 
-// ==============================
-// LIMPAR FORMULÁRIO
-// ==============================
 
+// =====================================================
+// CARREGAR PRODUTOS NO FECHAMENTO
+// =====================================================
 
-function limparProduto(){
 
+function carregarProdutosFechamento(){
 
-    document.getElementById("nomeProduto").value="";
 
+    const area =
+    document.getElementById("produtosFechamento");
 
-    document.getElementById("valorVenda").value="";
 
 
-    document.getElementById("valorCusto").value="";
-
-
-    document.getElementById("estoqueProduto").value="";
-
-
-    document.getElementById("descricaoProduto").value="";
-
-
-}
-
-
-
-
-// ==============================
-// VENDAS
-// ==============================
-
-
-function vendas(){
-
-
-    pageTitle.innerHTML="Vendas";
-
-
-    pageDescription.innerHTML=
-    "Registro das vendas realizadas.";
-
-
-
-    const produtos =
-    pegarDados("produtos");
-
-
-
-    app.innerHTML=`
-
-
-    <div class="form-card">
-
-
-        <h2>Registrar Venda</h2>
-
-
-
-        <select id="produtoVenda">
-
-
-        ${
-            produtos.map(p=>`
-
-            <option value="${p.id}">
-
-            ${p.nome}
-            -
-            R$ ${p.venda.toFixed(2)}
-
-            </option>
-
-            `).join("")
-        }
-
-
-        </select>
-
-
-
-
-        <input 
-        id="quantidadeVenda"
-        type="number"
-        placeholder="Quantidade">
-
-
-
-
-
-        <button
-        class="btn"
-        onclick="registrarVenda()">
-
-
-        Registrar
-
-
-        </button>
-
-
-
-    </div>
-
-
-
-    <div id="listaVendas"></div>
-
-
-    `;
-
-
-
-    carregarVendas();
-
-
-}
-
-
-
-
-
-// ==============================
-// REGISTRAR VENDA
-// ==============================
-
-
-function registrarVenda(){
-
-
-    const produtoId =
-    Number(
-    document.getElementById("produtoVenda").value
-    );
-
-
-    const quantidade =
-    Number(
-    document.getElementById("quantidadeVenda").value
-    );
-
-
-
-    const produtos =
-    pegarDados("produtos");
-
-
-
-    const produto =
-    produtos.find(
-        p=>p.id===produtoId
-    );
-
-
-
-    if(!produto)
-    return;
-
-
-
-    if(produto.estoque < quantidade){
-
-        alert(
-        "Estoque insuficiente."
-        );
+    if(!area){
 
         return;
 
@@ -861,493 +630,50 @@ function registrarVenda(){
 
 
 
+    area.innerHTML = "";
 
-    produto.estoque -= quantidade;
 
 
 
-    salvarDados(
-        "produtos",
-        produtos
-    );
+    produtos.forEach(produto => {
 
 
 
-    const vendas =
-    pegarDados("vendas");
+        area.innerHTML += `
 
-
-
-    vendas.push({
-
-
-        id:Date.now(),
-
-        produtoId,
-
-        produto:produto.nome,
-
-        quantidade,
-
-        valor:
-        produto.venda * quantidade,
-
-
-        data:
-        new Date().toLocaleDateString(
-        "pt-BR"
-        )
-
-
-    });
-
-
-
-    salvarDados(
-        "vendas",
-        vendas
-    );
-
-
-
-    carregarVendas();
-
-
-}
-
-
-
-
-
-// ==============================
-// LISTAR VENDAS
-// ==============================
-
-
-function carregarVendas(){
-
-
-    const lista =
-    document.getElementById("listaVendas");
-
-
-
-    if(!lista)
-    return;
-
-
-
-    const vendas =
-    pegarDados("vendas");
-
-
-
-    lista.innerHTML="";
-
-
-
-    vendas.forEach(v=>{
-
-
-        lista.innerHTML += `
-
-
-        <div class="card">
-
-
-        <h3>
-        ${v.produto}
-        </h3>
-
-
-        <p>
-        Quantidade:
-        ${v.quantidade}
-        </p>
-
-
-        <p>
-        Total:
-        R$ ${v.valor.toFixed(2)}
-        </p>
-
-
-        <small>
-        ${v.data}
-        </small>
-
-
-        </div>
-
-
-        `;
-
-
-    });
-
-
-}
-
-// ==============================
-// FECHAMENTO DO DIA
-// ==============================
-
-
-function fechamento(){
-
-
-    pageTitle.innerHTML="Fechamento";
-
-    pageDescription.innerHTML=
-    "Finalize o movimento do dia.";
-
-
-
-    const vendas =
-    pegarDados("vendas");
-
-
-    const produtos =
-    pegarDados("produtos");
-
-
-    const config =
-    JSON.parse(
-        localStorage.getItem("config")
-    );
-
-
-
-    let vendaTotal = 0;
-
-    let custoTotal = 0;
-
-
-
-    vendas.forEach(v=>{
-
-
-        vendaTotal += v.valor;
-
-
-
-        const produto =
-        produtos.find(
-            p=>p.id === v.produtoId
-        );
-
-
-
-        if(produto){
-
-            custoTotal +=
-            produto.custo * v.quantidade;
-
-        }
-
-
-    });
-
-
-
-    const taxa =
-    vendaTotal * (config.taxa / 100);
-
-
-
-    const imposto =
-    vendaTotal * (config.imposto / 100);
-
-
-
-    const lucro =
-    vendaTotal -
-    custoTotal -
-    taxa -
-    imposto;
-
-
-
-    app.innerHTML = `
-
-
-    <div class="cards">
-
-
-        <div class="card">
-
-            <h3>Total Vendido</h3>
-
-            <h2>
-            R$ ${vendaTotal.toFixed(2)}
-            </h2>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <h3>Custo dos Produtos</h3>
-
-            <h2>
-            R$ ${custoTotal.toFixed(2)}
-            </h2>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <h3>Taxas</h3>
-
-            <h2>
-            R$ ${taxa.toFixed(2)}
-            </h2>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <h3>Lucro Final</h3>
-
-            <h2>
-            R$ ${lucro.toFixed(2)}
-            </h2>
-
-        </div>
-
-
-    </div>
-
-
-
-    <button 
-    class="btn"
-    onclick="salvarFechamento()">
-
-    Finalizar Dia
-
-    </button>
-
-
-    `;
-
-
-}
-
-
-
-
-// ==============================
-// SALVAR FECHAMENTO
-// ==============================
-
-
-function salvarFechamento(){
-
-
-    const vendas =
-    pegarDados("vendas");
-
-
-    const produtos =
-    pegarDados("produtos");
-
-
-
-    const config =
-    JSON.parse(
-        localStorage.getItem("config")
-    );
-
-
-
-    let total = 0;
-
-    let custo = 0;
-
-
-
-    vendas.forEach(v=>{
-
-
-        total += v.valor;
-
-
-
-        const produto =
-        produtos.find(
-            p=>p.id === v.produtoId
-        );
-
-
-        if(produto){
-
-            custo +=
-            produto.custo * v.quantidade;
-
-        }
-
-
-    });
-
-
-
-    const relatorios =
-    pegarDados("relatorios");
-
-
-
-    relatorios.push({
-
-
-        id:Date.now(),
-
-
-        data:
-        new Date().toLocaleDateString(
-            "pt-BR"
-        ),
-
-
-        vendas:total,
-
-
-        custo,
-
-
-        lucro:
-        total -
-        custo,
-
-
-        produtosVendidos:
-        vendas.length
-
-
-    });
-
-
-
-    salvarDados(
-        "relatorios",
-        relatorios
-    );
-
-
-
-    // limpa vendas do dia
-
-    salvarDados(
-        "vendas",
-        []
-    );
-
-
-
-    alert(
-    "Fechamento realizado com sucesso!"
-    );
-
-
-    dashboard();
-
-
-}
-
-
-
-
-// ==============================
-// HISTÓRICO
-// ==============================
-
-
-function historico(){
-
-
-    pageTitle.innerHTML="Histórico";
-
-
-    pageDescription.innerHTML=
-    "Relatórios anteriores.";
-
-
-
-    const relatorios =
-    pegarDados("relatorios");
-
-
-
-    app.innerHTML="";
-
-
-
-    if(relatorios.length===0){
-
-
-        app.innerHTML=`
-
-        <div class="card">
-
-        Nenhum fechamento realizado.
-
-        </div>
-
-        `;
-
-
-        return;
-
-    }
-
-
-
-
-    relatorios.forEach(r=>{
-
-
-        app.innerHTML += `
-
-
-        <div class="card">
+        <div class="produto-fechamento">
 
 
             <h3>
-            ${r.data}
+            ${produto.nome}
             </h3>
 
 
             <p>
-            Venda:
-            R$ ${r.vendas.toFixed(2)}
+            Estoque inicial:
+            <strong>
+            ${produto.estoqueAtual}
+            </strong>
             </p>
 
 
-            <p>
-            Custo:
-            R$ ${r.custo.toFixed(2)}
-            </p>
+
+            <label>
+            Estoque final:
+            </label>
 
 
-            <p>
-            Lucro:
-            R$ ${r.lucro.toFixed(2)}
-            </p>
 
+            <input 
+            type="number"
+            min="0"
+            value="${produto.estoqueAtual}"
+            id="final-${produto.id}"
+            >
 
-            <p>
-            Produtos vendidos:
-            ${r.produtosVendidos}
-            </p>
 
 
         </div>
-
 
         `;
 
@@ -1361,133 +687,1473 @@ function historico(){
 
 
 
-// ==============================
-// CONFIGURAÇÕES
-// ==============================
 
-
-function configuracoes(){
-
-
-    pageTitle.innerHTML="Configurações";
-
-
-    pageDescription.innerHTML=
-    "Dados do estabelecimento.";
+// =====================================================
+// GERAR RELATÓRIO DO DIA
+// =====================================================
 
 
 
-    const config =
-    JSON.parse(
-        localStorage.getItem("config")
-    );
+function gerarRelatorio(){
 
 
 
-    app.innerHTML=`
-
-
-    <div class="form-card">
-
-
-        <h2>
-        Configurações
-        </h2>
+    const data =
+    document.getElementById(
+        "dataFechamento"
+    ).value;
 
 
 
-        <input
-        id="empresa"
-        value="${config.empresa}"
-        placeholder="Nome da empresa">
+    const local =
+    document.getElementById(
+        "local"
+    ).value;
 
 
 
-        <input
-        id="taxa"
-        type="number"
-        value="${config.taxa}"
-        placeholder="Taxa %">
+    const despesasExtras =
+    Number(
+        document.getElementById(
+            "despesasExtras"
+        ).value
+    ) || 0;
 
 
 
-        <input
-        id="imposto"
-        type="number"
-        value="${config.imposto}"
-        placeholder="Imposto %">
+    const taxas =
+    Number(
+        document.getElementById(
+            "taxas"
+        ).value
+    ) || 0;
 
 
 
-
-        <button
-        class="btn"
-        onclick="salvarConfiguracoes()">
-
-
-        Salvar
-
-
-        </button>
+    const impostos =
+    Number(
+        document.getElementById(
+            "impostos"
+        ).value
+    ) || 0;
 
 
 
-    </div>
-
-
-    `;
-
-
-
-}
+    const observacao =
+    document.getElementById(
+        "observacao"
+    ).value;
 
 
 
 
-// ==============================
-// SALVAR CONFIGURAÇÕES
-// ==============================
+
+    let produtosVendidos = [];
+
+    let custoProdutos = 0;
+
+    let receitaTotal = 0;
 
 
-function salvarConfiguracoes(){
 
 
-    const config = {
 
 
-        empresa:
-        document.getElementById("empresa").value,
+    produtos.forEach(produto => {
 
 
-        taxa:
-        Number(
-        document.getElementById("taxa").value
-        ),
+
+        const estoqueFinal = Number(
+
+            document.getElementById(
+                `final-${produto.id}`
+            ).value
+
+        );
 
 
-        imposto:
-        Number(
-        document.getElementById("imposto").value
-        )
+
+
+        const estoqueInicial =
+        produto.estoqueAtual;
+
+
+
+
+        const quantidadeVendida =
+
+        estoqueInicial - estoqueFinal;
+
+
+
+
+
+
+        const custoTotal =
+
+        quantidadeVendida *
+        produto.precoCusto;
+
+
+
+
+
+
+        const vendaTotal =
+
+        quantidadeVendida *
+        produto.precoVenda;
+
+
+
+
+
+
+
+        if(quantidadeVendida > 0){
+
+
+
+            produtosVendidos.push({
+
+
+                nome:
+                produto.nome,
+
+
+                inicial:
+                estoqueInicial,
+
+
+                vendido:
+                quantidadeVendida,
+
+
+                final:
+                estoqueFinal,
+
+
+                custo:
+                custoTotal,
+
+
+                venda:
+                vendaTotal
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+        custoProdutos += custoTotal;
+
+
+        receitaTotal += vendaTotal;
+
+
+
+
+
+
+        // Atualiza estoque
+
+        produto.estoqueAtual =
+        estoqueFinal;
+
+
+
+    });
+
+
+
+
+
+
+
+    const lucroBruto =
+
+    receitaTotal - custoProdutos;
+
+
+
+
+
+
+    const lucroLiquido =
+
+    lucroBruto -
+    despesasExtras -
+    taxas -
+    impostos;
+
+
+
+
+
+
+    let margem = 0;
+
+
+
+    if(receitaTotal > 0){
+
+
+        margem =
+
+        (
+            lucroLiquido /
+            receitaTotal
+        ) * 100;
+
+
+    }
+
+
+
+
+
+
+
+    const fechamento = {
+
+
+
+        id:
+        Date.now(),
+
+
+
+        data,
+
+
+
+        local,
+
+
+
+        produtos:
+        produtosVendidos,
+
+
+
+        receitaTotal,
+
+
+
+        custoProdutos,
+
+
+
+        despesasExtras,
+
+
+
+        taxas,
+
+
+
+        impostos,
+
+
+
+        lucroBruto,
+
+
+
+        lucroLiquido,
+
+
+
+        margem,
+
+
+
+        observacao
 
 
     };
 
 
 
-    localStorage.setItem(
 
-        "config",
 
-        JSON.stringify(config)
 
+
+
+    fechamentos.push(
+        fechamento
     );
+
+
+
+
+
+    salvarFechamentos();
+
+
+
+    salvarProdutos();
+
+
+
+
+    mostrarRelatorio(
+        fechamento
+    );
+
+
+
+
+    atualizarDashboard();
+
+
 
 
 
     alert(
-    "Configurações salvas!"
+        "Fechamento realizado com sucesso!"
+    );
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// SALVAR FECHAMENTOS
+// =====================================================
+
+
+function salvarFechamentos(){
+
+
+    localStorage.setItem(
+
+        "fechamentos",
+
+        JSON.stringify(fechamentos)
+
     );
 
 
 }
+
+
+
+
+
+
+
+
+// =====================================================
+// MOSTRAR RELATÓRIO
+// =====================================================
+
+
+function mostrarRelatorio(relatorio){
+
+
+
+    const area =
+    document.getElementById(
+        "areaRelatorio"
+    );
+
+
+
+    if(!area){
+
+        return;
+
+    }
+
+
+
+
+
+    let produtosHTML = "";
+
+
+
+
+
+    relatorio.produtos.forEach(produto => {
+
+
+
+        produtosHTML += `
+
+
+        <tr>
+
+
+        <td>
+        ${produto.nome}
+        </td>
+
+
+        <td>
+        ${produto.inicial}
+        </td>
+
+
+        <td>
+        ${produto.vendido}
+        </td>
+
+
+        <td>
+        ${produto.final}
+        </td>
+
+
+        <td>
+        R$ ${produto.custo.toFixed(2)}
+        </td>
+
+
+        </tr>
+
+
+        `;
+
+
+
+    });
+
+
+
+
+
+
+
+
+    area.innerHTML = `
+
+
+
+    <h2>
+    🌽 DELÍCIAS DO MILHO
+    </h2>
+
+
+    <hr>
+
+
+
+    <p>
+    Data:
+    ${relatorio.data}
+    </p>
+
+
+
+    <p>
+    Local:
+    ${relatorio.local}
+    </p>
+
+
+
+    <br>
+
+
+
+    <h3>
+    Produtos vendidos
+    </h3>
+
+
+
+    <table>
+
+
+    <tr>
+
+    <th>
+    Produto
+    </th>
+
+    <th>
+    Inicial
+    </th>
+
+
+    <th>
+    Vendido
+    </th>
+
+
+    <th>
+    Final
+    </th>
+
+
+    <th>
+    Custo
+    </th>
+
+
+    </tr>
+
+
+    ${produtosHTML}
+
+
+    </table>
+
+
+
+    <br>
+
+
+    <h3>
+    Resumo financeiro
+    </h3>
+
+
+
+    <p>
+    Receita:
+    R$ ${relatorio.receitaTotal.toFixed(2)}
+    </p>
+
+
+
+    <p>
+    Custos dos produtos:
+    R$ ${relatorio.custoProdutos.toFixed(2)}
+    </p>
+
+
+
+    <p>
+    Despesas extras:
+    R$ ${relatorio.despesasExtras.toFixed(2)}
+    </p>
+
+
+
+    <p>
+    Taxas:
+    R$ ${relatorio.taxas.toFixed(2)}
+    </p>
+
+
+
+    <p>
+    Impostos:
+    R$ ${relatorio.impostos.toFixed(2)}
+    </p>
+
+
+
+    <hr>
+
+
+
+    <h3>
+    Lucro Bruto:
+    R$ ${relatorio.lucroBruto.toFixed(2)}
+    </h3>
+
+
+
+    <h3>
+    Lucro Líquido:
+    R$ ${relatorio.lucroLiquido.toFixed(2)}
+    </h3>
+
+
+
+    <h3>
+    Margem:
+    ${relatorio.margem.toFixed(2)}%
+    </h3>
+
+
+
+    <br>
+
+
+
+    <p>
+    Observações:
+    ${relatorio.observacao}
+    </p>
+
+
+    `;
+
+
+
+}
+
+
+
+
+
+
+
+// Atualiza produtos no fechamento quando abrir a página
+
+document.addEventListener(
+"DOMContentLoaded",
+
+()=>{
+
+
+    carregarProdutosFechamento();
+
+
+});
+
+/* =====================================================
+   DELÍCIAS DO MILHO
+   SCRIPT PRINCIPAL - PARTE 3
+
+   Módulos:
+   - Dashboard automático
+   - Histórico
+   - Pesquisa
+   - Backup
+   - Restauração
+   - Impressão
+===================================================== */
+
+
+
+
+
+// =====================================================
+// ATUALIZAR DASHBOARD
+// =====================================================
+
+
+function atualizarDashboard(){
+
+
+
+    const vendaElemento =
+    document.getElementById(
+        "vendaTotal"
+    );
+
+
+
+    const lucroElemento =
+    document.getElementById(
+        "lucroTotal"
+    );
+
+
+
+    const produtosElemento =
+    document.getElementById(
+        "produtosVendidos"
+    );
+
+
+
+    const ultimoElemento =
+    document.getElementById(
+        "ultimoFechamento"
+    );
+
+
+
+
+
+    if(!vendaElemento){
+
+        return;
+
+    }
+
+
+
+
+
+    let vendaTotal = 0;
+
+    let lucroTotal = 0;
+
+    let quantidadeProdutos = 0;
+
+
+
+
+
+
+    fechamentos.forEach(fechamento => {
+
+
+
+        vendaTotal +=
+        fechamento.receitaTotal;
+
+
+
+        lucroTotal +=
+        fechamento.lucroLiquido;
+
+
+
+        fechamento.produtos.forEach(produto=>{
+
+
+            quantidadeProdutos +=
+            produto.vendido;
+
+
+        });
+
+
+
+    });
+
+
+
+
+
+
+
+    vendaElemento.innerHTML =
+
+    "R$ " +
+    vendaTotal.toFixed(2);
+
+
+
+
+    lucroElemento.innerHTML =
+
+    "R$ " +
+    lucroTotal.toFixed(2);
+
+
+
+
+
+    produtosElemento.innerHTML =
+
+    quantidadeProdutos;
+
+
+
+
+
+
+    if(fechamentos.length > 0){
+
+
+
+        const ultimo =
+
+        fechamentos[
+            fechamentos.length - 1
+        ];
+
+
+
+        ultimoElemento.innerHTML =
+
+        ultimo.data;
+
+
+
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================================
+// HISTÓRICO
+// =====================================================
+
+
+function carregarHistorico(){
+
+
+
+    const tabela =
+
+    document.getElementById(
+        "historicoTabela"
+    );
+
+
+
+    if(!tabela){
+
+        return;
+
+    }
+
+
+
+    tabela.innerHTML = "";
+
+
+
+
+
+    fechamentos
+    .slice()
+    .reverse()
+    .forEach(relatorio=>{
+
+
+        tabela.innerHTML += `
+
+
+        <tr>
+
+
+        <td>
+        ${relatorio.data}
+        </td>
+
+
+
+        <td>
+        ${relatorio.local}
+        </td>
+
+
+
+        <td>
+        R$ ${relatorio.receitaTotal.toFixed(2)}
+        </td>
+
+
+
+        <td>
+        R$ ${relatorio.lucroLiquido.toFixed(2)}
+        </td>
+
+
+
+        <td>
+
+
+        <button onclick="
+        abrirRelatorio(${relatorio.id})
+        ">
+        🔍
+        </button>
+
+
+
+        </td>
+
+
+
+        </tr>
+
+
+        `;
+
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+function abrirRelatorio(id){
+
+
+
+    const relatorio =
+
+    fechamentos.find(
+
+        item =>
+        item.id === id
+
+    );
+
+
+
+    if(relatorio){
+
+
+        mostrarRelatorio(
+            relatorio
+        );
+
+
+        mostrarPagina(
+            "relatorio"
+        );
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// PESQUISA NO HISTÓRICO
+// =====================================================
+
+
+function pesquisarHistorico(texto){
+
+
+
+    const tabela =
+
+    document.getElementById(
+        "historicoTabela"
+    );
+
+
+
+    if(!tabela){
+
+        return;
+
+    }
+
+
+
+
+
+    tabela.innerHTML = "";
+
+
+
+
+
+    const resultado =
+
+    fechamentos.filter(
+
+        item =>
+
+        item.data.includes(texto)
+
+        ||
+
+        item.local
+        .toLowerCase()
+        .includes(
+            texto.toLowerCase()
+        )
+
+
+    );
+
+
+
+
+
+
+
+    resultado.forEach(relatorio=>{
+
+
+
+        tabela.innerHTML += `
+
+
+        <tr>
+
+        <td>
+        ${relatorio.data}
+        </td>
+
+
+        <td>
+        ${relatorio.local}
+        </td>
+
+
+        <td>
+        R$ ${relatorio.receitaTotal.toFixed(2)}
+        </td>
+
+
+        <td>
+        R$ ${relatorio.lucroLiquido.toFixed(2)}
+        </td>
+
+
+        </tr>
+
+
+
+        `;
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+// =====================================================
+// EXPORTAR BACKUP
+// =====================================================
+
+
+function exportarBackup(){
+
+
+
+    const backup = {
+
+
+        produtos,
+
+
+        fechamentos,
+
+
+        configuracoes
+
+
+
+    };
+
+
+
+
+
+    const arquivo =
+
+    JSON.stringify(
+        backup,
+        null,
+        2
+    );
+
+
+
+
+
+
+    const blob =
+
+    new Blob(
+
+        [arquivo],
+
+        {
+
+            type:
+            "application/json"
+
+        }
+
+
+    );
+
+
+
+
+
+
+    const link =
+
+    document.createElement(
+        "a"
+    );
+
+
+
+
+    link.href =
+
+    URL.createObjectURL(
+        blob
+    );
+
+
+
+
+
+    link.download =
+
+    "backup-delicias-do-milho.json";
+
+
+
+
+
+    link.click();
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// RESTAURAR BACKUP
+// =====================================================
+
+
+function restaurarBackup(){
+
+
+
+    const input =
+
+    document.createElement(
+        "input"
+    );
+
+
+
+    input.type = "file";
+
+    input.accept =
+    ".json";
+
+
+
+
+
+    input.onchange = evento => {
+
+
+
+        const arquivo =
+
+        evento.target.files[0];
+
+
+
+        const leitor =
+
+        new FileReader();
+
+
+
+
+
+
+        leitor.onload = e => {
+
+
+
+            const dados =
+
+            JSON.parse(
+                e.target.result
+            );
+
+
+
+
+            produtos =
+            dados.produtos || [];
+
+
+
+            fechamentos =
+            dados.fechamentos || [];
+
+
+
+            configuracoes =
+            dados.configuracoes || {};
+
+
+
+
+
+
+            salvarProdutos();
+
+
+            salvarFechamentos();
+
+
+            salvarConfiguracoes();
+
+
+
+
+            location.reload();
+
+
+
+        };
+
+
+
+
+        leitor.readAsText(
+            arquivo
+        );
+
+
+
+    };
+
+
+
+
+    input.click();
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// LIMPAR SISTEMA
+// =====================================================
+
+
+function limparDados(){
+
+
+
+    const confirmar =
+
+    confirm(
+
+    "Deseja apagar todos os dados?"
+
+    );
+
+
+
+
+
+    if(confirmar){
+
+
+
+        localStorage.clear();
+
+
+
+        location.reload();
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// IMPRIMIR RELATÓRIO
+// =====================================================
+
+
+function imprimirRelatorio(){
+
+
+    window.print();
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// ALERTA DE ESTOQUE BAIXO
+// =====================================================
+
+
+function verificarEstoque(){
+
+
+
+    const alerta =
+
+    document.getElementById(
+        "alertasEstoque"
+    );
+
+
+
+    if(!alerta){
+
+        return;
+
+    }
+
+
+
+
+    let mensagens = [];
+
+
+
+
+
+    produtos.forEach(produto=>{
+
+
+
+        if(
+
+            produto.estoqueAtual <= 10
+
+        ){
+
+
+
+            mensagens.push(
+
+            `⚠ ${produto.nome}
+            está com estoque baixo`
+
+            );
+
+
+        }
+
+
+
+    });
+
+
+
+
+
+    if(mensagens.length > 0){
+
+
+
+        alerta.innerHTML =
+
+        mensagens.join("<br>");
+
+
+
+    }
+
+    else{
+
+
+        alerta.innerHTML =
+
+        "Nenhum alerta";
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// INICIALIZAÇÃO FINAL
+// =====================================================
+
+
+document.addEventListener(
+"DOMContentLoaded",
+
+()=>{
+
+
+    atualizarData();
+
+
+    carregarTema();
+
+
+    carregarProdutos();
+
+
+    carregarProdutosFechamento();
+
+
+    atualizarDashboard();
+
+
+    carregarHistorico();
+
+
+    verificarEstoque();
+
+
+
+});
