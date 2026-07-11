@@ -489,8 +489,15 @@ function criarLinhaProduto(produto) {
     tdVenda.textContent =
         formatarMoeda(produto.precoVenda);
 
-    /* Custo */
+    /* Lucro */
 
+   const tdLucro = document.createElement("td");
+
+   tdLucro.textContent = formatarMoeda(
+     produto.precoVenda - produto.precoCusto);
+
+   /*custo*/
+   
     const tdCusto = document.createElement("td");
 
     tdCusto.textContent =
