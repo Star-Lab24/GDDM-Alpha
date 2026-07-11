@@ -559,6 +559,8 @@ function criarLinhaProduto(produto) {
 
         tdCusto,
 
+        tdLucro,
+
         tdAcoes
 
     );
