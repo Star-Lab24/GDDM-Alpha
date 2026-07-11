@@ -281,3 +281,69 @@ body{
 }
 
 }
+
+/* ===========================
+   PRODUTOS
+=========================== */
+
+.form-card{
+
+    background:#FFF;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+.lista-produtos{
+
+    display:grid;
+
+    gap:20px;
+
+}
+
+.produto-card{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr 1fr auto;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.excluir{
+
+    background:#d9534f;
+
+    color:white;
+
+}
+
+@media(max-width:800px){
+
+.produto-card{
+
+    grid-template-columns:1fr;
+
+}
+
+}
